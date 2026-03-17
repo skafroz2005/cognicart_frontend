@@ -75,20 +75,27 @@ const CreateProductForm = () => {
 const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Convert the comma-separated string into an array, and trim extra spaces
+    // 1. Convert the comma-separated string into an images array
     const imageArray = typeof productData.images === 'string' 
         ? productData.images.split(',').map(url => url.trim()).filter(url => url !== "") 
         : productData.images;
 
-    // Create a copy of the data with the new array
+    // 2. NEW: Convert the comma-separated string into a tags array
+    const tagsArray = typeof productData.tags === 'string'
+        ? productData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== "")
+        : productData.tags;
+
+    // 3. Create a copy of the data with BOTH new arrays
     const finalProductData = {
         ...productData,
-        images: imageArray
+        images: imageArray,
+        tags: tagsArray // Add the tags array to the payload!
     };
 
     dispatch(createProduct(finalProductData));
     console.log("Submitted product data: ", finalProductData);
   };
+  
 
 
   return (

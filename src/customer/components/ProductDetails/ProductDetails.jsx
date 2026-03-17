@@ -40,22 +40,59 @@ export default function ProductDetails() {
     }
 
 
-    // 2. Fetch similar products when the main product's category loads
+    // 2. Fetch similar products (By Category AND Tags)
     useEffect(() => {
-        // Wait until Redux has successfully loaded the product and its category
-        if (products.product?.category?.name) {
-            const categoryName = products.product.category.name;
-            
-            // Ask Spring Boot for 10 products from this exact category
-            api.get(`/api/products?category=${categoryName}&pageSize=10`)
-                .then((res) => {
-                    // Remember to handle pagination just like the homepage!
-                    const dataArray = res.data.content || res.data;
-                    setSimilarProducts(dataArray);
-                })
-                .catch((err) => console.error("Failed to fetch similar products", err));
-        }
-    }, [products.product]); // This runs whenever the main product changes
+        const fetchSimilarProducts = async () => {
+            const currentProduct = products.product;
+            if (!currentProduct) return;
+
+            try {
+                let combinedResults = [];
+
+                // --- A. Fetch by Category ---
+                if (currentProduct.category?.name) {
+                    const categoryRes = await api.get(`/api/products?category=${currentProduct.category.name}&pageSize=10`);
+                    const categoryData = categoryRes.data.content || categoryRes.data;
+                    combinedResults = [...combinedResults, ...categoryData];
+                }
+
+                // --- B. Fetch by Tags ---
+                // Assuming your backend returns tags as an array (e.g., ["cotton", "summer"])
+                // We use your existing search endpoint to find products matching these keywords
+                if (currentProduct.tags && Array.isArray(currentProduct.tags)) {
+                    // Grab up to 2 tags to prevent overloading the backend with too many requests
+                    const topTags = currentProduct.tags.slice(0, 2); 
+                    
+                    const tagPromises = topTags.map(tag => 
+                        api.get(`/api/products/search?q=${tag}`)
+                    );
+                    
+                    // Wait for all tag searches to finish
+                    const tagResponses = await Promise.all(tagPromises);
+                    tagResponses.forEach(res => {
+                        const tagData = res.data.content || res.data;
+                        combinedResults = [...combinedResults, ...tagData];
+                    });
+                }
+
+                // --- C. Merge, Deduplicate, and Filter ---
+                // 1. Map trick to remove duplicates (if a product matched both the category AND the tag)
+                const uniqueProductsMap = new Map(combinedResults.map(item => [item.id, item]));
+                const uniqueProducts = Array.from(uniqueProductsMap.values());
+
+                // 2. Filter out the current product so the user doesn't see what they are already looking at
+                const finalSimilarProducts = uniqueProducts.filter(item => item.id !== currentProduct.id);
+
+                // Update the state!
+                setSimilarProducts(finalSimilarProducts);
+
+            } catch (error) {
+                console.error("Failed to fetch similar products by category and tags", error);
+            }
+        };
+
+        fetchSimilarProducts();
+    }, [products.product]); // Re-run whenever the main product changes
 
 
 
