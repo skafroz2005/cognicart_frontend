@@ -15,8 +15,13 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        dispatch(getCart());
-    }, [cart.updateCartItem, cart.deleteCartItem, dispatch]);
+    dispatch(getCart());
+  }, [
+    cart.cartItems,       // Triggers a refresh when a new item is added
+    cart.updateCartItem,  // Triggers a refresh when you click + or - quantity
+    cart.deleteCartItem,  // Triggers a refresh when you click remove
+    dispatch
+  ]);
 
     console.log(" discount - ", cart.cart?.totalPrice - cart.cart?.totalDiscountedPrice);
 

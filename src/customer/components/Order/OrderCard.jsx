@@ -1,54 +1,65 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import AdjustIcon from '@mui/icons-material/Adjust';
 import { useNavigate } from 'react-router-dom';
+import AdjustIcon from '@mui/icons-material/Adjust';
 
-const OrderCard = () => {
+const OrderCard = ({ order }) => {
     const navigate = useNavigate();
 
+    // Grab the first item in the order to use as the display picture/title
+    const firstItem = order?.orderItems?.[0];
+    
+    // Calculate if there are other items hidden in this order
+    const extraItemsCount = (order?.orderItems?.length || 1) - 1;
+
     return (
-        <div onClick={() => navigate(`/account/order/${5}`)} className='p-5 border cursor-pointer rounded-md hover:shadow-2xl transition-shadow duration-200 ease-in-out'>
+        <div 
+            onClick={() => navigate(`/account/order/${order?.id}`)} 
+            className='p-5 shadow-md shadow-black hover:shadow-2xl border cursor-pointer'
+        >
             <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
                 
-                {/* Product Image and Details */}
                 <Grid item xs={6}>
                     <div className='flex cursor-pointer'>
                         <img 
                             className='w-[5rem] h-[5rem] object-cover object-top' 
-                            src="https://rukminim1.flixcart.com/image/612/612/l5h2xe80/kurta/x/6/n/m-kast-tile-green-majestic-man-original-imagg4z33hu4kzpv.jpeg?q=70" 
-                            alt="" 
+                            src={firstItem?.product?.imageUrl} 
+                            alt={firstItem?.product?.title} 
                         />
                         <div className='ml-5 space-y-2'>
-                            <p className=''>Men Printed Cotton Blend Straight Kurta</p>
-                            <p className='opacity-50 text-xs font-semibold'>Size: M</p>
-                            <p className='opacity-50 text-xs font-semibold'>Color: Black</p>
+                            <p className='font-semibold'>{firstItem?.product?.title}</p>
+                            
+                            {/* If they bought more than 1 item, show a helpful tag! */}
+                            {extraItemsCount > 0 && (
+                                <p className='text-sm text-indigo-600 font-semibold'>
+                                    + {extraItemsCount} more item{extraItemsCount > 1 ? 's' : ''}
+                                </p>
+                            )}
+                            
+                            <p className='opacity-50 text-xs font-semibold'>Size: {firstItem?.size}</p>
                         </div>
                     </div>
                 </Grid>
 
-                {/* Price */}
                 <Grid item xs={2}>
-                    <p>₹1099</p>
+                    {/* Show the TOTAL price of the order, not just the single item's price */}
+                    <p className='font-semibold'>₹{order?.totalDiscountedPrice}</p>
                 </Grid>
 
-                {/* Delivery Status */}
                 <Grid item xs={4}>
-                    {true && <div>
-                        <p>
-                            <AdjustIcon sx={{ width: "15px", height: "15px" }} className='text-green-600 mr-2 text-sm' />
-                            <span>
-                                Delivered On March 03
-                            </span>
-                        </p>
-                        <p className='text-xs'>
-                            Your Item Has Been Delivered
-                        </p>
-                    </div>}
-                    {false && <p>
-                        <span>
-                            Expected Delivery on Mar 03
-                        </span>
-                    </p>}
+                    {true && (
+                        <div>
+                            <p>
+                                <AdjustIcon sx={{ width: "15px", height: "15px" }} className='text-green-600 mr-2 text-sm' />
+                                <span>
+                                    {order?.orderStatus === "DELIVERED" ? "Delivered On Mar 03" : "Expected Delivery On Mar 03"}
+                                </span>
+                            </p>
+                            <p className='text-xs'>
+                                {order?.orderStatus === "DELIVERED" ? "Your Order Has Been Delivered" : `Status: ${order?.orderStatus}`}
+                            </p>
+                        </div>
+                    )}
                 </Grid>
 
             </Grid>

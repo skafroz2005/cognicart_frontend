@@ -1,4 +1,7 @@
 import {
+    SEARCH_PRODUCT_REQUEST,
+    SEARCH_PRODUCT_SUCCESS,
+    SEARCH_PRODUCT_FAILURE,
     CREATE_PRODUCT_FAILURE,
     CREATE_PRODUCT_REQUEST,
     CREATE_PRODUCT_SUCCESS,
@@ -17,7 +20,8 @@ const initialState = {
     products: [],
     product: null,
     loading: false,
-    error: null
+    error: null,
+    searchResults: [], // <--- ADD THIS LINE
 };
 
 export const customerProductReducer = (state = initialState, action) => {
@@ -51,7 +55,22 @@ export const customerProductReducer = (state = initialState, action) => {
                 } 
             };
 
+        // 1. When the search starts, show a loading state
+        case SEARCH_PRODUCT_REQUEST:
+            return { ...state, loading: true, error: null };
 
+        // 2. When the backend successfully returns the data, save it into 'searchResults'
+        case SEARCH_PRODUCT_SUCCESS:
+            return { 
+                ...state, 
+                loading: false, 
+                error: null, 
+                searchResults: action.payload // <--- Here is where the data is saved!
+            };
+
+        // 3. If the backend crashes or there is an error, save the error message
+        case SEARCH_PRODUCT_FAILURE:
+            return { ...state, loading: false, error: action.payload };
             
         case FIND_PRODUCTS_FAILURE:
         case FIND_PRODUCT_BY_ID_FAILURE:

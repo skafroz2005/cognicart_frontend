@@ -55,9 +55,11 @@
 
 
 
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import OrderCard from './OrderCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderHistory } from '../../../State/Order/Action';
 
 const orderStatus = [
     { label: "On The Way", value: "on_the_way" },
@@ -66,26 +68,66 @@ const orderStatus = [
     { label: "Returned", value: "returned" },
 ];
 
+
+
 const Order = () => {
+
+    const dispatch = useDispatch();
+    const { order } = useSelector(store => store);
+    
+    // 1. Create a state array to remember which boxes are checked
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+
+    // 2. Function to add or remove a status when a box is clicked
+    const handleFilterChange = (e) => {
+        const value = e.target.value.toUpperCase(); // Convert to uppercase to match backend (e.g., "DELIVERED")
+        
+        if (e.target.checked) {
+            // Add to array if checked
+            setSelectedStatuses([...selectedStatuses, value]);
+        } else {
+            // Remove from array if unchecked
+            setSelectedStatuses(selectedStatuses.filter((status) => status !== value));
+        }
+    };
+
+    useEffect(() => {
+        dispatch(getOrderHistory());
+    }, [dispatch]);
+
+    // 3. Sort AND Filter the orders before rendering!
+    const filteredAndSortedOrders = [...(order.orders || [])]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .filter((orderItem) => {
+            // If no boxes are checked, show everything
+            if (selectedStatuses.length === 0) return true;
+            
+            // "ON_THE_WAY" is a special UI filter that usually represents multiple backend states
+            if (selectedStatuses.includes("ON_THE_WAY")) {
+                if (["PLACED", "CONFIRMED", "SHIPPED", "PENDING"].includes(orderItem.orderStatus)) return true;
+            }
+            
+            // Otherwise, check if the order's status matches any of our checked boxes
+            return selectedStatuses.includes(orderItem.orderStatus);
+        });
+
     return (
-        <div className='px-5 lg:px-20 mt-5'>
-            {/* Tailwind Grid Container */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className='px:5 lg:px-20'>
+            <Grid container sx={{ justifyContent: "space-between" }}>
                 
-                {/* Left Side: Filter Options (Takes up 3/12 columns on large screens) */}
-                <div className="col-span-1 lg:col-span-3 text-left">
+                {/* Left Sidebar: Filters */}
+                <Grid item xs={2.5}>
                     <div className='h-auto shadow-lg bg-white p-5 sticky top-5'>
                         <h1 className='font-bold text-lg'>Filter</h1>
-                        
                         <div className='space-y-4 mt-10'>
                             <h1 className='font-semibold'>ORDER STATUS</h1>
-                            
                             {orderStatus.map((option) => (
                                 <div key={option.value} className='flex items-center'>
-                                    <input
-                                        defaultValue={option.value}
-                                        type="checkbox"
-                                        className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                    <input 
+                                        defaultValue={option.value} 
+                                        type="checkbox" 
+                                        onChange={handleFilterChange} // <--- ADD THIS LINE
+                                        className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500' 
                                     />
                                     <label className='ml-3 text-sm text-gray-600' htmlFor={option.value}>
                                         {option.label}
@@ -94,17 +136,19 @@ const Order = () => {
                             ))}
                         </div>
                     </div>
-                </div>
+                </Grid>
 
-                {/* Right Side: Rendered Order Cards (Takes up 9/12 columns on large screens) */}
-                <div className="col-span-1 lg:col-span-9 text-left">
+                {/* Right Main Area: Dynamic Order Cards */}
+                <Grid item xs={9}>
                     <div className='space-y-5'>
-                        {/* Dummy array to map multiple order cards for now */}
-                        {[1, 1, 1, 1].map((item, index) => <OrderCard key={index} />)}
+                        {/* CHANGE this to map over filteredAndSortedOrders */}
+                        {filteredAndSortedOrders.map((orderItem) => (
+                            <OrderCard key={orderItem.id} order={orderItem} />
+                        ))}
                     </div>
-                </div>
+                </Grid>
 
-            </div>
+            </Grid>
         </div>
     );
 };

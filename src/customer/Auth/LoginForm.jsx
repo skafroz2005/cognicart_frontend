@@ -1,5 +1,5 @@
 import { Button, Grid, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../State/Auth/Action';
@@ -31,10 +31,11 @@ const LoginForm = () => {
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <TextField required id="email" name="email" label="Email" fullWidth autoComplete="email" />
+                        <TextField required id="email" name="email" label="Email" fullWidth autoComplete="email" type='email' />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField required id="password" name="password" label="Password" fullWidth autoComplete="password" type="password" />
+                        <TextField required id="password" name="password" label="Password" fullWidth autoComplete="password" type="password" inputProps={{ minLength: 8 }} // <--- Forces them to type at least 8 characters
+        helperText="Password must be at least 8 characters long." />
                     </Grid>
                     <Grid item xs={12}>
                         <Button

@@ -153,9 +153,10 @@ const DeliveryAddressForm = () => {
     // Method 2: Handles the Left Side (Using a SAVED address)
     const handleCreateOrderWithSavedAddress = (savedAddress) => {
         
-        // "Clean" the address by extracting ONLY the text fields we need.
-        // This strips away the 'id' and 'user' properties that crash the backend!
+        // Strip away ONLY the 'user' property that crashes the backend.
+        // Keep the 'id' so the backend knows this address already exists!
         const cleanAddress = {
+            id: savedAddress.id,         // <--- ADD THIS LINE BACK IN
             firstName: savedAddress.firstName,
             lastName: savedAddress.lastName,
             streetAddress: savedAddress.streetAddress,

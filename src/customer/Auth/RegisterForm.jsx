@@ -14,7 +14,7 @@ const RegisterForm = () => {
         if(jwt){
             dispatch(getUser(jwt))
         }
-    }, [jwt, auth.jwt])  
+    }, [jwt, auth.jwt, dispatch])  
 
 
     const handleSubmit = (e) => {
@@ -42,10 +42,11 @@ const RegisterForm = () => {
                         <TextField required id="lastName" name="lastName" label="Last Name" fullWidth autoComplete="family-name" />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField required id="email" name="email" label="Email" fullWidth autoComplete="email" />
+                        <TextField required id="email" name="email" label="Email" fullWidth autoComplete="email" type="email"/>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField required id="password" name="password" label="Password" fullWidth autoComplete="password" type="password" />
+                        <TextField required id="password" name="password" label="Password" fullWidth autoComplete="password" type="password" inputProps={{ minLength: 8 }} // <--- Forces them to type at least 8 characters
+        helperText="Password must be at least 8 characters long."/>
                     </Grid>
                     <Grid item xs={12}>
                         <Button 

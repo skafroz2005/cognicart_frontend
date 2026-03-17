@@ -10,6 +10,9 @@ import Checkout from '../customer/components/Checkout/Checkout';
 import Order from '../customer/components/Order/Order';
 import OrderDetails from '../customer/components/Order/OrderDetails';
 import PaymentSuccess from '../customer/components/Payment/PaymentSuccess';
+import SearchResults from '../customer/components/Product/SearchResults';
+import RateProduct from '../customer/components/ReviewProduct/RateProduct';
+
 
 const CustomerRoutes = () => {
     return (
@@ -29,7 +32,11 @@ const CustomerRoutes = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/account/order" element={<Order />} />
                 <Route path="/account/order/:orderId" element={<OrderDetails />} />
-                <Route path="/payment/success" element={<PaymentSuccess />} />
+                <Route path="/payment" element={<PaymentSuccess />} />
+
+                <Route path="/account/rate/:productId" element={<RateProduct />} />
+
+                <Route path="/search" element={<SearchResults />} />
             </Routes>
 
             {/* The Footer will persist across all customer routes */}
