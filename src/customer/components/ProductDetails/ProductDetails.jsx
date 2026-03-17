@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProductsById } from '../../../State/Product/Action'
 import { addItemToCart } from '../../../State/Cart/Action'
+import { api } from '../../../config/apiConfig';
 import { mens_kurta } from '../../../Data/mens_kurta'
 
 
@@ -22,6 +23,7 @@ export default function ProductDetails() {
     const { products } = useSelector(store => store);
 
     const [activeImage, setActiveImage] = useState(null);//added by me
+    const [similarProducts, setSimilarProducts] = useState([]);
 
     // Fetch the specific product details when the component loads
     useEffect(() => {
@@ -36,6 +38,26 @@ export default function ProductDetails() {
         dispatch(addItemToCart(data))
         navigate("/cart")
     }
+
+
+    // 2. Fetch similar products when the main product's category loads
+    useEffect(() => {
+        // Wait until Redux has successfully loaded the product and its category
+        if (products.product?.category?.name) {
+            const categoryName = products.product.category.name;
+            
+            // Ask Spring Boot for 10 products from this exact category
+            api.get(`/api/products?category=${categoryName}&pageSize=10`)
+                .then((res) => {
+                    // Remember to handle pagination just like the homepage!
+                    const dataArray = res.data.content || res.data;
+                    setSimilarProducts(dataArray);
+                })
+                .catch((err) => console.error("Failed to fetch similar products", err));
+        }
+    }, [products.product]); // This runs whenever the main product changes
+
+
 
     // --- DYNAMIC RATING & REVIEW LOGIC ---
     const ratingsArray = products.product?.ratings || [];
@@ -429,56 +451,21 @@ export default function ProductDetails() {
                 {/* Similar Products */}
                 <section className='pt-10'>
                     <h1 className='py-5 text-xl font-bold'>Similar Products</h1>
-                    <div className='flex flex-wrap space-y-5 justify-center'>
-                        {mens_kurta.map((item, index) => <HomeSectionCard key={index} product={item} />)}
+                    <div className='flex flex-wrap space-y-5 justify-center gap-4'>
+                        
+                        {/* 3. Filter out the currently viewed product, then map the rest! */}
+                        {similarProducts
+                            ?.filter((item) => item.id !== products.product?.id)
+                            .map((item) => (
+                                <HomeSectionCard key={item.id} product={item} />
+                            ))
+                        }
+                        
                     </div>
                 </section>
+
             </div>
         </div>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

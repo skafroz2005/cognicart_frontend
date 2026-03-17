@@ -8,6 +8,8 @@ import { getAllCustomers } from '../../State/Auth/Action';
 const CustomersTable = () => {
     const dispatch = useDispatch();
     const { auth } = useSelector(store => store);
+    // const { admin } = useSelector(store => store);
+
 
     useEffect(() => {
         // Dispatching the action to fetch all users from the backend
@@ -25,7 +27,7 @@ const CustomersTable = () => {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Image</TableCell>
+                                <TableCell>Avatar</TableCell>
                                 <TableCell align="left">Name</TableCell>
                                 <TableCell align="left">Email</TableCell>
                                 <TableCell align="left">Role</TableCell>
@@ -33,27 +35,29 @@ const CustomersTable = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {/* We map through the users fetched from the backend */}
-                            {auth.users?.map((item) => (
+                            {/* 1. Filter out the ADMINs first */}
+                            {/* 2. Then map over the remaining customers */}
+                            {auth.customers?.filter((item) => item.role !== "ADMIN").map((item) => (
                                 <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell align="left">
-                                        <Avatar sx={{ bgcolor: "#9155fd" }}>
-                                            {item.firstName[0].toUpperCase()}
+                                    
+                                    <TableCell>
+                                        <Avatar className='bg-[#9155fd] text-white'>
+                                            {item.firstName ? item.firstName[0].toUpperCase() : "U"}
                                         </Avatar>
                                     </TableCell>
-                                    <TableCell align="left" scope="row">
-                                        {item.firstName + " " + item.lastName}
-                                    </TableCell>
-                                    <TableCell align="left">{item.email}</TableCell>
-                                    <TableCell align="left">
-                                        <span className={`px-4 py-1 rounded-full text-white ${item.role === 'ROLE_ADMIN' ? 'bg-purple-600' : 'bg-green-600'}`}>
-                                            {item.role === 'ROLE_ADMIN' ? 'Admin' : 'Customer'}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell align="left">{item.id}</TableCell>
+                                    
+                                    <TableCell>{item.firstName} {item.lastName}</TableCell>
+                                    
+                                    <TableCell>{item.email}</TableCell>
+                                    
+                                    <TableCell>{item.role}</TableCell>
+                                    
+                                    <TableCell>{item.id}</TableCell>
+
                                 </TableRow>
                             ))}
                         </TableBody>
+
                     </Table>
                 </TableContainer>
                 
