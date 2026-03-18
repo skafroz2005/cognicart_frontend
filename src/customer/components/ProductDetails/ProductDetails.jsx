@@ -41,6 +41,7 @@ export default function ProductDetails() {
 
 
     // 2. Fetch similar products (By Category AND Tags)
+    // 2. Fetch similar products (By Category AND Tags)
     useEffect(() => {
         const fetchSimilarProducts = async () => {
             const currentProduct = products.product;
@@ -49,50 +50,51 @@ export default function ProductDetails() {
             try {
                 let combinedResults = [];
 
-                // --- A. Fetch by Category ---
+                // --- A. Bulletproof Fetch by Category ---
                 if (currentProduct.category?.name) {
-                    const categoryRes = await api.get(`/api/products?category=${currentProduct.category.name}&pageSize=10`);
-                    const categoryData = categoryRes.data.content || categoryRes.data;
+                    const categoryName = encodeURIComponent(currentProduct.category.name);
+                    
+                    // THIS IS THE FIX: The massive safe URL
+                    const safeUrl = `/api/products?color=&size=&minPrice=0&maxPrice=1000000&minDiscount=0&category=${categoryName}&stock=null&sort=price_low&pageNumber=0&pageSize=10`;
+                    
+                    const categoryRes = await api.get(safeUrl);
+                    // Add safe fallback [] if it returns null
+                    const categoryData = categoryRes.data?.content || categoryRes.data || []; 
                     combinedResults = [...combinedResults, ...categoryData];
                 }
 
                 // --- B. Fetch by Tags ---
-                // Assuming your backend returns tags as an array (e.g., ["cotton", "summer"])
-                // We use your existing search endpoint to find products matching these keywords
                 if (currentProduct.tags && Array.isArray(currentProduct.tags)) {
-                    // Grab up to 2 tags to prevent overloading the backend with too many requests
-                    const topTags = currentProduct.tags.slice(0, 2); 
+                    // Grab up to 3 tags for better results
+                    const topTags = currentProduct.tags.slice(0, 3); 
                     
                     const tagPromises = topTags.map(tag => 
-                        api.get(`/api/products/search?q=${tag}`)
+                        // Encode the tag safely
+                        api.get(`/api/products/search?q=${encodeURIComponent(tag)}`)
                     );
                     
-                    // Wait for all tag searches to finish
                     const tagResponses = await Promise.all(tagPromises);
                     tagResponses.forEach(res => {
-                        const tagData = res.data.content || res.data;
+                        const tagData = res.data?.content || res.data || [];
                         combinedResults = [...combinedResults, ...tagData];
                     });
                 }
 
                 // --- C. Merge, Deduplicate, and Filter ---
-                // 1. Map trick to remove duplicates (if a product matched both the category AND the tag)
                 const uniqueProductsMap = new Map(combinedResults.map(item => [item.id, item]));
                 const uniqueProducts = Array.from(uniqueProductsMap.values());
 
-                // 2. Filter out the current product so the user doesn't see what they are already looking at
                 const finalSimilarProducts = uniqueProducts.filter(item => item.id !== currentProduct.id);
 
-                // Update the state!
                 setSimilarProducts(finalSimilarProducts);
 
             } catch (error) {
-                console.error("Failed to fetch similar products by category and tags", error);
+                console.error("Failed to fetch similar products", error);
             }
         };
 
         fetchSimilarProducts();
-    }, [products.product]); // Re-run whenever the main product changes
+    }, [products.product]);
 
 
 

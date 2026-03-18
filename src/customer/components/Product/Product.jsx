@@ -41,6 +41,18 @@ export default function Product() {
   // const { levelOne, levelTwo, levelThree } = useParams();
 
   // console.log("Page: ", product.products?.totalPages);
+  const sortOptions = [
+  { name: 'Price: Low to High', value: 'price_low', current: false },
+  { name: 'Price: High to Low', value: 'price_high', current: false },
+]
+
+  const handleSortChange = (value) => {
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set("sort", value);
+        const query = searchParams.toString();
+        navigate({ search: `?${query}` });
+    };
+
 
   const handlePaginationChange = (event, value) => {
     const searchParams = new URLSearchParams(location.search);
@@ -176,16 +188,17 @@ export default function Product() {
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <p
+                              // 1. ADD THIS ONCLICK EVENT
+                              onClick={() => handleSortChange(option.value)}
                               className={classNames(
                                 option.current ? 'font-medium text-gray-900' : 'text-gray-500',
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm'
+                                'block px-4 py-2 text-sm cursor-pointer' // 2. Add cursor-pointer so it feels clickable!
                               )}
                             >
                               {option.name}
-                            </a>
+                            </p>
                           )}
                         </Menu.Item>
                       ))}
