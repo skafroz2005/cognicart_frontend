@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { findProductsById } from '../../../State/Product/Action'
 import { addItemToCart } from '../../../State/Cart/Action'
 import { api } from '../../../config/apiConfig';
-import { mens_kurta } from '../../../Data/mens_kurta'
+// import { mens_kurta } from '../../../Data/mens_kurta'
 
 
 function classNames(...classes) {
@@ -50,46 +50,43 @@ export default function ProductDetails() {
             try {
                 let combinedResults = [];
 
-                // --- A. Bulletproof Fetch by Category ---
+                // --- A. Category Fetch ---
                 if (currentProduct.category?.name) {
                     const categoryName = encodeURIComponent(currentProduct.category.name);
-                    
-                    // THIS IS THE FIX: The massive safe URL
-                    const safeUrl = `/api/products?color=&size=&minPrice=0&maxPrice=1000000&minDiscount=0&category=${categoryName}&stock=null&sort=price_low&pageNumber=0&pageSize=10`;
-                    
-                    const categoryRes = await api.get(safeUrl);
-                    // Add safe fallback [] if it returns null
+                    const categoryRes = await api.get(`/api/products?color=&size=&minPrice=0&maxPrice=1000000&minDiscount=0&category=${categoryName}&stock=null&sort=price_low&pageNumber=0&pageSize=10&searchQuery=`);
                     const categoryData = categoryRes.data?.content || categoryRes.data || []; 
                     combinedResults = [...combinedResults, ...categoryData];
                 }
 
-                // --- B. Fetch by Tags ---
+                // --- B. Safe Tag Fetch ---
                 if (currentProduct.tags && Array.isArray(currentProduct.tags)) {
-                    // Grab up to 3 tags for better results
                     const topTags = currentProduct.tags.slice(0, 3); 
                     
                     const tagPromises = topTags.map(tag => 
-                        // Encode the tag safely
-                        api.get(`/api/products/search?q=${encodeURIComponent(tag)}`)
+                        // We use the main endpoint now, passing the tag as the searchQuery!
+                        // The .catch() prevents a single bad tag from crashing the whole page.
+                        api.get(`/api/products?color=&size=&minPrice=0&maxPrice=1000000&minDiscount=0&category=&stock=null&sort=price_low&pageNumber=0&pageSize=10&searchQuery=${encodeURIComponent(tag)}`)
+                           .catch(err => { console.warn("Tag fetch failed:", err); return null; })
                     );
                     
                     const tagResponses = await Promise.all(tagPromises);
                     tagResponses.forEach(res => {
-                        const tagData = res.data?.content || res.data || [];
-                        combinedResults = [...combinedResults, ...tagData];
+                        if (res && res.data) {
+                            const tagData = res.data?.content || res.data || [];
+                            combinedResults = [...combinedResults, ...tagData];
+                        }
                     });
                 }
 
                 // --- C. Merge, Deduplicate, and Filter ---
                 const uniqueProductsMap = new Map(combinedResults.map(item => [item.id, item]));
                 const uniqueProducts = Array.from(uniqueProductsMap.values());
-
                 const finalSimilarProducts = uniqueProducts.filter(item => item.id !== currentProduct.id);
 
                 setSimilarProducts(finalSimilarProducts);
 
             } catch (error) {
-                console.error("Failed to fetch similar products", error);
+                console.error("Critical failure in Similar Products", error);
             }
         };
 

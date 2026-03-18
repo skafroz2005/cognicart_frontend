@@ -36,7 +36,9 @@ const OrderCard = ({ order }) => {
                                 </p>
                             )}
                             
-                            <p className='opacity-50 text-xs font-semibold'>Size: {firstItem?.size}</p>
+                            {firstItem?.size && (
+                                <p className='opacity-50 text-xs font-semibold'>Size: {firstItem?.size}</p>
+                            )}
                         </div>
                     </div>
                 </Grid>

@@ -17,6 +17,22 @@ import {
     DELETE_PRODUCT_FAILURE
 } from "./ActionType";
 
+// export const findProducts = (reqData) => async (dispatch) => {
+//     dispatch({ type: FIND_PRODUCTS_REQUEST });
+    
+//     // Add searchQuery to your destructured variables
+//     const { colors, sizes, minPrice, maxPrice, minDiscount, category, topLevelCategory, searchQuery, stock, sort, pageNumber, pageSize } = reqData;
+
+//     try {
+//         // Append &searchQuery=${searchQuery || ''} to your API string
+//         const { data } = await api.get(`/api/products?color=${colors}&size=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&minDiscount=${minDiscount}&category=${category || ''}&topLevelCategory=${topLevelCategory || ''}&searchQuery=${searchQuery || ''}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        
+//         dispatch({ type: FIND_PRODUCTS_SUCCESS, payload: data });
+//     } // ... catch block stays the same
+//      catch (error) {
+//         dispatch({ type: FIND_PRODUCTS_FAILURE, payload: error.message });
+//     }
+// };
 export const findProducts = (reqData) => async (dispatch) => {
     dispatch({ type: FIND_PRODUCTS_REQUEST });
     
@@ -24,12 +40,13 @@ export const findProducts = (reqData) => async (dispatch) => {
     const { colors, sizes, minPrice, maxPrice, minDiscount, category, topLevelCategory, searchQuery, stock, sort, pageNumber, pageSize } = reqData;
 
     try {
-        // Append &searchQuery=${searchQuery || ''} to your API string
-        const { data } = await api.get(`/api/products?color=${colors}&size=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&minDiscount=${minDiscount}&category=${category || ''}&topLevelCategory=${topLevelCategory || ''}&searchQuery=${searchQuery || ''}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        // THE FIX: Added || fallbacks to EVERY parameter so Spring Boot never receives the word "undefined"
+        const { data } = await api.get(
+            `/api/products?color=${colors || ''}&size=${sizes || ''}&minPrice=${minPrice || 0}&maxPrice=${maxPrice || 1000000}&minDiscount=${minDiscount || 0}&category=${category || ''}&topLevelCategory=${topLevelCategory || ''}&searchQuery=${searchQuery || ''}&stock=${stock || ''}&sort=${sort || ''}&pageNumber=${pageNumber || 0}&pageSize=${pageSize || 10}`
+        );
         
         dispatch({ type: FIND_PRODUCTS_SUCCESS, payload: data });
-    } // ... catch block stays the same
-     catch (error) {
+    } catch (error) {
         dispatch({ type: FIND_PRODUCTS_FAILURE, payload: error.message });
     }
 };

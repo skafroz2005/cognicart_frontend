@@ -13,7 +13,7 @@ const OrderDetails = () => {
     const { orderId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     // 2. Access the global Redux store where the order data will be saved
     const { order } = useSelector(store => store);
 
@@ -26,7 +26,7 @@ const OrderDetails = () => {
 
     // Optional: A helper function to dynamically move the tracker bar
     const getOrderStatusStep = (status) => {
-        switch(status) {
+        switch (status) {
             case "PLACED": return 1;
             case "CONFIRMED": return 2;
             case "SHIPPED": return 3;
@@ -54,29 +54,38 @@ const OrderDetails = () => {
             <Grid container className='space-y-5'>
                 {/* Loop through every item inside this specific order */}
                 {order.order?.orderItems?.map((item) => (
-                    <Grid 
-                        item 
-                        container 
-                        className='shadow-xl rounded-md p-5 border' 
-                        sx={{ alignItems: "center", justifyContent: "space-between" }} 
+                    <Grid
+                        item
+                        container
+                        className='shadow-xl rounded-md p-5 border'
+                        sx={{ alignItems: "center", justifyContent: "space-between" }}
                         key={item.id}
                     >
                         {/* Item Details (Image, Title, Size, Price) */}
                         <Grid item xs={6}>
                             <div className='flex items-center space-x-4'>
-                                <img 
-                                    className='w-[5rem] h-[5rem] object-cover object-top' 
-                                    src={item.product?.imageUrl} 
-                                    alt={item.product?.title} 
+                                <img
+                                    className='w-[5rem] h-[5rem] object-cover object-top'
+                                    src={item.product?.imageUrl}
+                                    alt={item.product?.title}
                                 />
                                 <div className='space-y-2 ml-5'>
                                     <p className='font-semibold'>{item.product?.title}</p>
                                     <p className='space-x-5 opacity-50 text-xs font-semibold'>
-                                        <span>Color: {item.product?.color}</span> 
-                                        <span>Size: {item.size}</span>
+                                        <span>Color: {item.product?.color}</span>
+                                        {item.size && (
+                                            <span>Size: {item.size}</span>
+                                        )}
                                     </p>
                                     <p>Seller: {item.product?.brand}</p>
-                                    <p>₹{item.discountedPrice}</p>
+                                    <p>Total Price: ₹{item.discountedPrice}</p>
+                                    {/* --- ADD THESE TWO NEW LINES HERE --- */}
+                                    <p className='opacity-50 text-xs font-semibold'>
+                                        Quantity: {item?.quantity}
+                                    </p>
+                                    <p className='opacity-50 text-xs font-semibold'>
+                                        Unit Price: ₹{item?.discountedPrice / item?.quantity}
+                                    </p>
                                 </div>
                             </div>
                         </Grid>
@@ -85,9 +94,9 @@ const OrderDetails = () => {
                         {/* ONLY SHOW THIS IF DELIVERED */}
                         {order.order?.orderStatus === "DELIVERED" && (
                             <Grid item>
-                                <Box 
-                                    onClick={() => navigate(`/account/rate/${item.product.id}`)} 
-                                    sx={{ color: deepPurple[500], cursor: "pointer" }} 
+                                <Box
+                                    onClick={() => navigate(`/account/rate/${item.product.id}`)}
+                                    sx={{ color: deepPurple[500], cursor: "pointer" }}
                                     className="flex items-center"
                                 >
                                     <StarBorderIcon sx={{ fontSize: "2rem" }} className='px-2' />
