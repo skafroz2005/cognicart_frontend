@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Grid, Rating } from '@mui/material';
+import { Avatar, Box, Rating } from '@mui/material';
 
 const ProductReviewCard = ({ item, ratings }) => {
     
@@ -15,9 +15,9 @@ const ProductReviewCard = ({ item, ratings }) => {
 
     return (
         <div>
-            <Grid container spacing={2} gap={3}>
+            <div className='mui-grid-container-div mui-spacing-2' style={{ gap: '24px' }}>
                 
-                <Grid item xs={1}>
+                <div className='mui-grid-item-div mui-col-xs-1'>
                     <Box>
                         <Avatar 
                             className='text-white' 
@@ -27,9 +27,9 @@ const ProductReviewCard = ({ item, ratings }) => {
                             {initial}
                         </Avatar>
                     </Box>
-                </Grid>
+                </div>
 
-                <Grid item xs={9}>
+                <div className='mui-grid-item-div mui-col-xs-9'>
                     <div className='space-y-2'>
                         <div>
                             {/* Insert the safe username! */}
@@ -45,9 +45,9 @@ const ProductReviewCard = ({ item, ratings }) => {
                     <p className='mt-2'>
                         {item?.review}
                     </p>
-                </Grid>
+                </div>
 
-            </Grid>
+            </div>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePayment } from '../../../State/Payment/Action';
-import { Alert, AlertTitle, Grid } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import OrderTracker from '../Order/OrderTracker';
 import AddressCard from '../AddressCard/AddressCard';
 import { useLocation } from 'react-router-dom'; // Changed to useLocation
@@ -57,10 +57,10 @@ const PaymentSuccess = () => {
 
             {/* ADD THIS CONDITIONAL CHECK: Only draw the Grid if order.order actually exists! */}
             {order.order && (
-                <Grid container className='space-y-5 py-5 pt-20'>
+                <div className='space-y-5 py-5 pt-20'>
                     {order.order.orderItems.map((item) => (
-                        <Grid container item className='shadow-xl rounded-md p-5' sx={{ alignItems: "center", justifyContent: "space-between" }} key={item.id}>
-                            <Grid item xs={6}>
+                        <div className='mui-grid-container-div mui-grid-item-div shadow-xl rounded-md p-5' style={{ alignItems: "center", justifyContent: "space-between" }} key={item.id}>
+                            <div className='mui-grid-item-div mui-col-xs-6'>
                                 <div className='flex items-center'>
                                     <img className='w-[5rem] h-[5rem] object-cover object-top' src={item.product?.imageUrl} alt={item.product?.title} />
                                     <div className='ml-5 space-y-2'>
@@ -72,14 +72,14 @@ const PaymentSuccess = () => {
                                         <p className='font-semibold'>₹ {item.discountedPrice}</p>
                                     </div>
                                 </div>
-                            </Grid>
+                            </div>
                             
-                            <Grid item>
+                            <div className='mui-grid-item-div'>
                                 <AddressCard address={order.order.shippingAddress} />
-                            </Grid>
-                        </Grid>
+                            </div>
+                        </div>
                     ))}
-                </Grid>
+                </div>
             )}
             {/* END OF CONDITIONAL CHECK */}
             

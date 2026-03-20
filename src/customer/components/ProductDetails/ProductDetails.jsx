@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { Box, Button, Grid, LinearProgress, Rating } from '@mui/material'
+import { Box, Button, LinearProgress, Rating } from '@mui/material'
 import ProductReviewCard from './ProductReviewCard'
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -372,9 +372,9 @@ export default function ProductDetails() {
                 <section className='px-4 lg:px-20'>
                     <h1 className='font-semibold text-lg pb-4'>Recent Review & Rating</h1>
                     <div className='border p-5'>
-                        <Grid container spacing={7}>
+                        <div className='mui-grid-container-div mui-spacing-7'>
                             {/* Inside the Grid for Reviews & Ratings */}
-                            <Grid item xs={12} lg={7}>
+                            <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-7'>
                                 <div className='space-y-5'>
 
                                     {/* Check if the product has reviews, then map over them! */}
@@ -387,9 +387,9 @@ export default function ProductDetails() {
                                         />
                                     ))}
                                 </div>
-                            </Grid>
+                            </div>
 
-                            <Grid item xs={12} md={5}>
+                            <div className='mui-grid-item-div mui-col-xs-12 mui-col-md-5'>
                                 <h1 className='text-xl font-semibold pb-2'>Product Ratings</h1>
                                 <div className='flex items-center space-x-3'>
                                     {/* 1. Dynamic Overall Stars */}
@@ -399,35 +399,35 @@ export default function ProductDetails() {
 
                                 <Box className="mt-5 space-y-3">
                                     {/* Excellent (5 Stars) */}
-                                    <Grid container alignItems="center" gap={2}>
-                                        <Grid item xs={2}><p>Excellent</p></Grid>
-                                        <Grid item xs sx={{ flex: 1 }}>
+                                    <div className='mui-grid-container-div' style={{ alignItems: 'center', gap: '16px' }}>
+                                        <div className='mui-grid-item-div mui-col-xs-2'><p>Excellent</p></div>
+                                        <div className='mui-grid-item-div' style={{ flex: 1 }}>
                                             <LinearProgress
                                                 variant="determinate"
                                                 value={excellentPercent} // Dynamic!
                                                 color="success"
                                                 sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
                                             />
-                                        </Grid>
-                                    </Grid>
+                                        </div>
+                                    </div>
 
                                     {/* Very Good (4 Stars) */}
-                                    <Grid container alignItems="center" gap={2}>
-                                        <Grid item xs={2}><p>Very Good</p></Grid>
-                                        <Grid item xs sx={{ flex: 1 }}>
+                                    <div className='mui-grid-container-div' style={{ alignItems: 'center', gap: '16px' }}>
+                                        <div className='mui-grid-item-div mui-col-xs-2'><p>Very Good</p></div>
+                                        <div className='mui-grid-item-div' style={{ flex: 1 }}>
                                             <LinearProgress
                                                 variant="determinate"
                                                 value={veryGoodPercent} // Dynamic!
                                                 color="success"
                                                 sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
                                             />
-                                        </Grid>
-                                    </Grid>
+                                        </div>
+                                    </div>
 
                                     {/* Good (3 Stars) */}
-                                    <Grid container alignItems="center" gap={2}>
-                                        <Grid item xs={2}><p>Good</p></Grid>
-                                        <Grid item xs sx={{ flex: 1 }}>
+                                    <div className='mui-grid-container-div' style={{ alignItems: 'center', gap: '16px' }}>
+                                        <div className='mui-grid-item-div mui-col-xs-2'><p>Good</p></div>
+                                        <div className='mui-grid-item-div' style={{ flex: 1 }}>
                                             <LinearProgress
                                                 variant="determinate"
                                                 value={goodPercent} // Dynamic!
@@ -439,13 +439,13 @@ export default function ProductDetails() {
                                                     "& .MuiLinearProgress-bar": { bgcolor: "#2196f3" }
                                                 }}
                                             />
-                                        </Grid>
-                                    </Grid>
+                                        </div>
+                                    </div>
 
                                     {/* Average (2 Stars) */}
-                                    <Grid container alignItems="center" gap={2}>
-                                        <Grid item xs={2}><p>Average</p></Grid>
-                                        <Grid item xs sx={{ flex: 1 }}>
+                                    <div className='mui-grid-container-div' style={{ alignItems: 'center', gap: '16px' }}>
+                                        <div className='mui-grid-item-div mui-col-xs-2'><p>Average</p></div>
+                                        <div className='mui-grid-item-div' style={{ flex: 1 }}>
                                             <LinearProgress
                                                 variant="determinate"
                                                 value={averagePercent} // Dynamic!
@@ -457,13 +457,13 @@ export default function ProductDetails() {
                                                     "& .MuiLinearProgress-bar": { bgcolor: "#ff9800" }
                                                 }}
                                             />
-                                        </Grid>
-                                    </Grid>
+                                        </div>
+                                    </div>
 
                                     {/* Poor (1 Star) */}
-                                    <Grid container alignItems="center" gap={2}>
-                                        <Grid item xs={2}><p>Poor</p></Grid>
-                                        <Grid item xs sx={{ flex: 1 }}>
+                                    <div className='mui-grid-container-div' style={{ alignItems: 'center', gap: '16px' }}>
+                                        <div className='mui-grid-item-div mui-col-xs-2'><p>Poor</p></div>
+                                        <div className='mui-grid-item-div' style={{ flex: 1 }}>
                                             <LinearProgress
                                                 variant="determinate"
                                                 value={poorPercent} // Dynamic!
@@ -475,12 +475,12 @@ export default function ProductDetails() {
                                                     "& .MuiLinearProgress-bar": { bgcolor: "#f44336" }
                                                 }}
                                             />
-                                        </Grid>
-                                    </Grid>
+                                        </div>
+                                    </div>
                                 </Box>
-                            </Grid>
+                            </div>
                             
-                        </Grid>
+                        </div>
                     </div>
                 </section>
 

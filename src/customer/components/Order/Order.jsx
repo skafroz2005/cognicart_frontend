@@ -56,7 +56,6 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
 import OrderCard from './OrderCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrderHistory } from '../../../State/Order/Action';
@@ -113,10 +112,10 @@ const Order = () => {
 
     return (
         <div className='px:5 lg:px-20'>
-            <Grid container sx={{ justifyContent: "space-between" }}>
+            <div className='mui-grid-container-div' style={{ justifyContent: "space-between" }}>
                 
                 {/* Left Sidebar: Filters */}
-                <Grid item xs={2.5}>
+                <div className='mui-grid-item-div mui-col-xs-2-5'>
                     <div className='h-auto shadow-lg bg-white p-5 sticky top-5'>
                         <h1 className='font-bold text-lg'>Filter</h1>
                         <div className='space-y-4 mt-10'>
@@ -136,19 +135,19 @@ const Order = () => {
                             ))}
                         </div>
                     </div>
-                </Grid>
+                </div>
 
                 {/* Right Main Area: Dynamic Order Cards */}
-                <Grid item xs={9}>
+                <div className='mui-grid-item-div mui-col-xs-9'>
                     <div className='space-y-5'>
                         {/* CHANGE this to map over filteredAndSortedOrders */}
                         {filteredAndSortedOrders.map((orderItem) => (
                             <OrderCard key={orderItem.id} order={orderItem} />
                         ))}
                     </div>
-                </Grid>
+                </div>
 
-            </Grid>
+            </div>
         </div>
     );
 };

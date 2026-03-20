@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Typography,
-  Grid,
   TextField,
   Button,
   FormControl,
@@ -104,8 +103,8 @@ const handleSubmit = (e) => {
         Add New Product
       </Typography>
       <form onSubmit={handleSubmit} className="min-h-screen">
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
+        <div className="mui-grid-container-div mui-spacing-3">
+          <div className="mui-grid-item-div mui-col-xs-12">
             <TextField
               fullWidth
               label="Image URL"
@@ -113,9 +112,9 @@ const handleSubmit = (e) => {
               value={productData.imageUrl}
               onChange={handleChange}
             />
-          </Grid>
+          </div>
           {/* ADD THIS NEW INPUT */}
-          <Grid item xs={12}>
+          <div className="mui-grid-item-div mui-col-xs-12">
             <TextField
               fullWidth
               label="Gallery Image URLs (Separate multiple URLs with commas)"
@@ -125,8 +124,8 @@ const handleSubmit = (e) => {
               value={productData.images}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
             <TextField
               fullWidth
               label="Brand"
@@ -134,8 +133,8 @@ const handleSubmit = (e) => {
               value={productData.brand}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
             <TextField
               fullWidth
               label="Title"
@@ -143,8 +142,8 @@ const handleSubmit = (e) => {
               value={productData.title}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
             <TextField
               fullWidth
               label="Color"
@@ -152,9 +151,9 @@ const handleSubmit = (e) => {
               value={productData.color}
               onChange={handleChange}
             />
-          </Grid>
+          </div>
 
-          <Grid item xs={12}>
+          <div className="mui-grid-item-div mui-col-xs-12">
             <TextField
               fullWidth
               label="Search Tags (Hidden keywords, separated by commas)"
@@ -163,9 +162,9 @@ const handleSubmit = (e) => {
               onChange={handleChange}
               placeholder="e.g., pants, trousers, bottomwear, formal"
             />
-          </Grid>
+          </div>
 
-          <Grid item xs={12} sm={6}>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
             <TextField
               fullWidth
               label="Quantity"
@@ -174,8 +173,8 @@ const handleSubmit = (e) => {
               value={productData.quantity}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={4}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-4">
             <TextField
               fullWidth
               label="Price"
@@ -184,8 +183,8 @@ const handleSubmit = (e) => {
               value={productData.price}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={4}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-4">
             <TextField
               fullWidth
               label="Discounted Price"
@@ -194,8 +193,8 @@ const handleSubmit = (e) => {
               value={productData.discountedPrice}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={4}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-4">
             <TextField
               fullWidth
               label="Discount Percent"
@@ -204,10 +203,10 @@ const handleSubmit = (e) => {
               value={productData.discountPercent}
               onChange={handleChange}
             />
-          </Grid>
+          </div>
 
           {/* Category Selectors */}
-          <Grid item xs={6} sm={4}>
+          <div className="mui-grid-item-div mui-col-xs-6 mui-col-sm-4">
             <FormControl fullWidth>
               <InputLabel>Top Level Category</InputLabel>
               <Select
@@ -221,8 +220,8 @@ const handleSubmit = (e) => {
                 <MenuItem value="kids">Kids</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={4}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-6 mui-col-sm-4">
             <FormControl fullWidth>
               <InputLabel>Second Level Category</InputLabel>
               <Select
@@ -236,8 +235,8 @@ const handleSubmit = (e) => {
                 <MenuItem value="brands">Brands</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={4}>
+          </div>
+          <div className="mui-grid-item-div mui-col-xs-6 mui-col-sm-4">
             <FormControl fullWidth>
               <InputLabel>Third Level Category</InputLabel>
               <Select
@@ -255,9 +254,9 @@ const handleSubmit = (e) => {
                 <MenuItem value="shirt">Shirts</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
+          </div>
 
-          <Grid item xs={12}>
+          <div className="mui-grid-item-div mui-col-xs-12">
             <TextField
               fullWidth
               label="Description"
@@ -267,12 +266,13 @@ const handleSubmit = (e) => {
               value={productData.description}
               onChange={handleChange}
             />
-          </Grid>
+          </div>
 
           {/* Sizes Input */}
           {productData.size.map((size, index) => (
-            <Grid container item spacing={3} key={index}>
-              <Grid item xs={12} sm={6}>
+            <div className="mui-grid-item-div mui-col-xs-12" key={index}>
+              <div className="mui-grid-container-div mui-spacing-3">
+              <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
                 <TextField
                   label="Size Name"
                   name="name"
@@ -281,8 +281,8 @@ const handleSubmit = (e) => {
                   required
                   fullWidth
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              </div>
+              <div className="mui-grid-item-div mui-col-xs-12 mui-col-sm-6">
                 <TextField
                   label="Quantity"
                   name="size_quantity"
@@ -291,11 +291,12 @@ const handleSubmit = (e) => {
                   required
                   fullWidth
                 />
-              </Grid>
-            </Grid>
+              </div>
+              </div>
+            </div>
           ))}
 
-          <Grid item xs={12}>
+          <div className="mui-grid-item-div mui-col-xs-12">
             <Button
               variant="contained"
               sx={{ p: 1.8, bgcolor: "#9155fd" }}
@@ -305,8 +306,8 @@ const handleSubmit = (e) => {
             >
               Add New Product
             </Button>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </form>
     </div>
   );

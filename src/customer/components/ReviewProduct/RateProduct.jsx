@@ -1,4 +1,4 @@
-import { Button, Grid, Rating, TextField, Typography } from '@mui/material';
+import { Button, Rating, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,9 +50,9 @@ const RateProduct = () => {
     return (
         <div className='px-5 lg:px-20 py-10'>
             <h1 className='text-xl font-bold pb-10'>Rate & Review Product</h1>
-            <Grid container spacing={5}>
+            <div className='mui-grid-container-div mui-spacing-5'>
                 {/* Left Side: Product Info */}
-                <Grid item xs={12} lg={4}>
+                <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-4'>
                     <div className='border rounded-md shadow-md p-5 flex flex-col items-center'>
                         <img 
                             className='w-[15rem] h-[15rem] object-cover object-top' 
@@ -66,10 +66,10 @@ const RateProduct = () => {
                             <p className='opacity-50'>{products.product?.title}</p>
                         </div>
                     </div>
-                </Grid>
+                </div>
 
                 {/* Right Side: The Form */}
-                <Grid item xs={12} lg={8}>
+                <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-8'>
                     <form onSubmit={handleSubmit} className='space-y-5 border rounded-md shadow-md p-5'>
                         <div>
                             <Typography component="legend">Rate This Product</Typography>
@@ -101,8 +101,8 @@ const RateProduct = () => {
                             Submit Review
                         </Button>
                     </form>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsCellIcon from '@mui/icons-material/SettingsCell';
@@ -37,7 +37,7 @@ const salesData = [
 // Reusable function to map the stat blocks to the Grid
 const renderStats = () => {
     return salesData.map((item, index) => (
-        <Grid item xs={12} sm={3} key={index}>
+        <div className='mui-grid-item-div mui-col-xs-12 mui-col-sm-3' key={index}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Avatar 
                     variant='rounded' 
@@ -57,7 +57,7 @@ const renderStats = () => {
                     <Typography variant='h6'>{item.stats}</Typography>
                 </Box>
             </Box>
-        </Grid>
+        </div>
     ));
 };
 
@@ -88,9 +88,9 @@ const MonthlyOverview = () => {
                 }}
             />
             <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
-                <Grid container spacing={[5, 0]}>
+                <div className='mui-grid-container-div mui-row-gap-40'>
                     {renderStats()}
-                </Grid>
+                </div>
             </CardContent>
         </Card>
     );

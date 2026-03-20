@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AddressCard from '../AddressCard/AddressCard';
 import OrderTracker from './OrderTracker';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -51,18 +51,16 @@ const OrderDetails = () => {
             </div>
 
             {/* --- SECTION 3: Ordered Items Grid --- */}
-            <Grid container className='space-y-5'>
+            <div className='space-y-5'>
                 {/* Loop through every item inside this specific order */}
                 {order.order?.orderItems?.map((item) => (
-                    <Grid
-                        item
-                        container
-                        className='shadow-xl rounded-md p-5 border'
-                        sx={{ alignItems: "center", justifyContent: "space-between" }}
+                    <div
+                        style={{ alignItems: "center", justifyContent: "space-between" }}
                         key={item.id}
+                        className='mui-grid-container-div mui-grid-item-div shadow-xl rounded-md p-5 border'
                     >
                         {/* Item Details (Image, Title, Size, Price) */}
-                        <Grid item xs={6}>
+                        <div className='mui-grid-item-div mui-col-xs-6'>
                             <div className='flex items-center space-x-4'>
                                 <img
                                     className='w-[5rem] h-[5rem] object-cover object-top'
@@ -88,12 +86,12 @@ const OrderDetails = () => {
                                     </p>
                                 </div>
                             </div>
-                        </Grid>
+                        </div>
 
                         {/* Rate & Review Button */}
                         {/* ONLY SHOW THIS IF DELIVERED */}
                         {order.order?.orderStatus === "DELIVERED" && (
-                            <Grid item>
+                            <div className='mui-grid-item-div'>
                                 <Box
                                     onClick={() => navigate(`/account/rate/${item.product.id}`)}
                                     sx={{ color: deepPurple[500], cursor: "pointer" }}
@@ -102,12 +100,12 @@ const OrderDetails = () => {
                                     <StarBorderIcon sx={{ fontSize: "2rem" }} className='px-2' />
                                     <span>Rate & Review Product</span>
                                 </Box>
-                            </Grid>
+                            </div>
                         )}
 
-                    </Grid>
+                    </div>
                 ))}
-            </Grid>
+            </div>
         </div>
     );
 };

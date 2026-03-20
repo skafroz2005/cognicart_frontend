@@ -1,4 +1,3 @@
-import { Grid } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -17,9 +16,9 @@ const OrderCard = ({ order }) => {
             onClick={() => navigate(`/account/order/${order?.id}`)} 
             className='p-5 shadow-md shadow-black hover:shadow-2xl border cursor-pointer'
         >
-            <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
+            <div className='mui-grid-container-div mui-spacing-2' style={{ justifyContent: "space-between" }}>
                 
-                <Grid item xs={6}>
+                <div className='mui-grid-item-div mui-col-xs-6'>
                     <div className='flex cursor-pointer'>
                         <img 
                             className='w-[5rem] h-[5rem] object-cover object-top' 
@@ -41,14 +40,14 @@ const OrderCard = ({ order }) => {
                             )}
                         </div>
                     </div>
-                </Grid>
+                </div>
 
-                <Grid item xs={2}>
+                <div className='mui-grid-item-div mui-col-xs-2'>
                     {/* Show the TOTAL price of the order, not just the single item's price */}
                     <p className='font-semibold'>₹{order?.totalDiscountedPrice}</p>
-                </Grid>
+                </div>
 
-                <Grid item xs={4}>
+                <div className='mui-grid-item-div mui-col-xs-4'>
                     {true && (
                         <div>
                             <p>
@@ -62,9 +61,9 @@ const OrderCard = ({ order }) => {
                             </p>
                         </div>
                     )}
-                </Grid>
+                </div>
 
-            </Grid>
+            </div>
         </div>
     );
 };
