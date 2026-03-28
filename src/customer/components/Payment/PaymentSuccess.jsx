@@ -40,7 +40,7 @@ const PaymentSuccess = () => {
     }, [dispatch, orderId, paymentId]);
     
     return (
-        <div className='px-2 lg:px-36'>
+        <div className='px-2 lg:px-36 bg-[#f8fafc] min-h-screen py-8'>
             <div className='flex flex-col justify-center items-center'>
                 <Alert
                     variant='filled'
@@ -59,7 +59,7 @@ const PaymentSuccess = () => {
             {order.order && (
                 <div className='space-y-5 py-5 pt-20'>
                     {order.order.orderItems.map((item) => (
-                        <div className='mui-grid-container-div mui-grid-item-div shadow-xl rounded-md p-5' style={{ alignItems: "center", justifyContent: "space-between" }} key={item.id}>
+                        <div className='mui-grid-container-div mui-grid-item-div shadow-sm rounded-2xl p-5 bg-white border border-gray-100' style={{ alignItems: "center", justifyContent: "space-between" }} key={item.id}>
                             <div className='mui-grid-item-div mui-col-xs-6'>
                                 <div className='flex items-center'>
                                     <img className='w-[5rem] h-[5rem] object-cover object-top' src={item.product?.imageUrl} alt={item.product?.title} />

@@ -1,7 +1,6 @@
-import { Avatar, AvatarGroup, Button, Card, CardHeader, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Avatar, AvatarGroup, Card, CardHeader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//import { confirmOrder, deleteOrder, deliverOrder, getOrders, shipOrder } from '../../State/Admin/Order/Action';
 import {getOrders, shipOrder, confirmOrder, deliverOrder, deleteOrder} from "../../State/Admin/Orders/Action";
 
 const OrdersTableView = () => {
@@ -48,73 +47,82 @@ const OrdersTableView = () => {
         dispatch(deleteOrder(orderId));
     };
 
+    const getStatusStyles = (status) => {
+        switch(status) {
+            case 'PENDING': return 'bg-gray-100 text-gray-700';
+            case 'PLACED': return 'bg-blue-50 text-blue-700';
+            case 'CONFIRMED': return 'bg-emerald-50 text-emerald-700';
+            case 'SHIPPED': return 'bg-indigo-50 text-indigo-700';
+            case 'DELIVERED': return 'bg-green-50 text-green-700';
+            default: return 'bg-gray-100 text-gray-700';
+        }
+    };
+
+    const headCellSx = { fontWeight: 600, color: '#6b7280', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' };
+
     return (
-        <div className='p-5'>
-            <Card className="mt-2 bg-white">
-                <CardHeader title="Recent Orders" />
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Image</TableCell>
-                                <TableCell align="left">Title</TableCell>
-                                <TableCell align="left">Id</TableCell>
-                                <TableCell align="left">Price</TableCell>
-                                <TableCell align="left">Status</TableCell>
-                
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {adminOrder.orders?.map((item, index) => (
-                                <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    
-                                    <TableCell align="left">
-                                        <AvatarGroup max={3} sx={{ justifyContent: 'start' }}>
-                                            {item.orderItems.map((orderItem) => (
-                                                <Avatar key={orderItem.id} src={orderItem.product.imageUrl} alt={orderItem.product.title} />
-                                            ))}
-                                        </AvatarGroup>
-                                    </TableCell>
-
-                                    <TableCell align="left" scope="row">
+        <Card sx={{ 
+            borderRadius: '16px', 
+            border: '1px solid #f1f5f9',
+            boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.04)',
+            overflow: 'hidden',
+            '&:hover': { boxShadow: '0 4px 12px 0 rgb(0 0 0 / 0.08)' },
+            transition: 'box-shadow 0.2s ease',
+        }}>
+            <CardHeader 
+                title="Recent Orders" 
+                titleTypographyProps={{ sx: { fontWeight: 700, color: '#111827', fontSize: '1rem' } }}
+                sx={{ borderBottom: '1px solid #f1f5f9' }}
+            />
+            <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow sx={{ bgcolor: '#f8fafc' }}>
+                            <TableCell sx={headCellSx}>Image</TableCell>
+                            <TableCell align="left" sx={headCellSx}>Title</TableCell>
+                            <TableCell align="left" sx={headCellSx}>Id</TableCell>
+                            <TableCell align="left" sx={headCellSx}>Price</TableCell>
+                            <TableCell align="left" sx={headCellSx}>Status</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {adminOrder.orders?.map((item, index) => (
+                            <TableRow key={item.id} sx={{ 
+                                '&:last-child td, &:last-child th': { border: 0 },
+                                '&:hover': { bgcolor: '#f9fafb' },
+                                transition: 'background-color 0.15s ease',
+                            }}>
+                                
+                                <TableCell align="left">
+                                    <AvatarGroup max={3} sx={{ justifyContent: 'start' }}>
                                         {item.orderItems.map((orderItem) => (
-                                            <p key={orderItem.id}>{orderItem.product.title}</p>
+                                            <Avatar key={orderItem.id} src={orderItem.product.imageUrl} alt={orderItem.product.title} sx={{ width: 36, height: 36, borderRadius: '8px' }} />
                                         ))}
-                                    </TableCell>
+                                    </AvatarGroup>
+                                </TableCell>
 
-                                    <TableCell align="left">{item.id}</TableCell>
-                                    <TableCell align="left">₹{item.totalDiscountedPrice}</TableCell>
+                                <TableCell align="left" scope="row" sx={{ color: '#374151', fontSize: '0.8rem' }}>
+                                    {item.orderItems.map((orderItem) => (
+                                        <p key={orderItem.id}>{orderItem.product.title}</p>
+                                    ))}
+                                </TableCell>
 
-                                    <TableCell align="left">
-                                        {/* Status Badge */}
-                                        <span className={`text-white px-5 py-2 rounded-full
-                                            ${item.orderStatus === "CONFIRMED" ? "bg-[#369236]" :
-                                            item.orderStatus === "SHIPPED" ? "bg-[#4141ff]" :
-                                            item.orderStatus === "PLACED" ? "bg-[#02B290]" :
-                                            item.orderStatus === "PENDING" ? "bg-[gray]" :
-                                            "bg-[#025720]"}`}>
-                                            {item.orderStatus}
-                                        </span>
-                                    </TableCell>
+                                <TableCell align="left" sx={{ color: '#6b7280', fontWeight: 500, fontSize: '0.8rem' }}>#{item.id}</TableCell>
+                                <TableCell align="left" sx={{ color: '#374151', fontWeight: 600, fontSize: '0.8rem' }}>₹{item.totalDiscountedPrice}</TableCell>
 
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Card>
-        </div>
+                                <TableCell align="left">
+                                    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusStyles(item.orderStatus)}`}>
+                                        {item.orderStatus}
+                                    </span>
+                                </TableCell>
+
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Card>
     );
 };
 
 export default OrdersTableView;
-
-
-
-
-
-
-
-
-
-

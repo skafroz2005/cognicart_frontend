@@ -26,7 +26,7 @@ const Cart = () => {
     console.log(" discount - ", cart.cart?.totalPrice - cart.cart?.totalDiscountedPrice);
 
     return (
-        <div>
+        <div className='bg-[#f8fafc] min-h-screen py-8'>
             <div className='lg:grid grid-cols-3 lg:px-16 relative'>
                 {/* Left Side: Cart Items Mapping */}
                 <div className='col-span-2'>
@@ -41,7 +41,7 @@ const Cart = () => {
                 
                 {/* Right Side: Price Details */}
                 <div className='px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0'>
-                    <div className='border p-5 bg-white shadow-lg rounded-md'>
+                    <div className='border border-gray-100 p-6 bg-white shadow-sm rounded-2xl'>
                         <p className='uppercase font-bold opacity-60 pb-4'>Price details</p>
                         <hr />
                         <div className='space-y-3 font-semibold mb-10'>

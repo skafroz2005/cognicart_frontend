@@ -30,7 +30,7 @@ const OrderSummary = () => {
     return (
         <div>
             {/* Top Section: Delivery Address Card */}
-            <div className='p-5 shadow-lg rounded-s-md border w-full text-left mx-0'>
+            <div className='p-5 shadow-sm rounded-2xl border border-gray-100 bg-white w-full text-left mx-0'>
                 <AddressCard address={order.order?.shippingAddress} />
             </div>
             
@@ -42,7 +42,7 @@ const OrderSummary = () => {
                     </div>
                     
                     <div className='px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0'>
-                        <div className='border'>
+                        <div className='border border-gray-100 rounded-2xl bg-white shadow-sm'>
                             <p className='uppercase font-bold opacity-60 pb-4 p-5'>Price details</p>
                             <Divider />
                             <div className='space-y-3 font-semibold mb-10 p-5'>

@@ -33,6 +33,7 @@ const RegisterForm = () => {
 
     return (
         <div>
+            <h2 className='text-center text-2xl font-bold text-gray-900 mb-6'>Create Account</h2>
             <form onSubmit={handleSubmit}>
                 <div className='mui-grid-container-div mui-spacing-3'>
                     <div className='mui-grid-item-div mui-col-xs-12 mui-col-sm-6'>
@@ -62,7 +63,7 @@ const RegisterForm = () => {
                 </div>
             </form>
             
-            <div className='flex justify-center flex-col items-center mt-5'>
+            <div className='flex justify-center flex-col items-center mt-6 pt-4 border-t border-gray-100'>
                 <p className='pb-2 text-gray-500'>if you have already account?</p>
                 <Button onClick={() => navigate("/login")} className='w-full' variant='text' sx={{ color: "#9155fd" }}>
                     Login

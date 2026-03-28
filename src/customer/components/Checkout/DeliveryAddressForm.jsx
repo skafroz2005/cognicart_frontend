@@ -176,7 +176,7 @@ const DeliveryAddressForm = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
                 {/* Left Side: Saved Addresses */}
-                <div className='col-span-1 lg:col-span-5 border rounded-md shadow-md h-[30.5rem] overflow-y-scroll'>
+                <div className='col-span-1 lg:col-span-5 border border-gray-100 rounded-2xl shadow-sm bg-white h-[30.5rem] overflow-y-scroll'>
                     <div className='p-5 py-7 border-b cursor-pointer'>
                         {auth.user?.address?.length > 0 ? (
                             auth.user.address.map((item) => (
@@ -203,7 +203,7 @@ const DeliveryAddressForm = () => {
 
                 {/* Right Side: New Address Form */}
                 <div className='col-span-1 lg:col-span-7'>
-                    <Box className="border rounded-md shadow-md p-5">
+                    <Box className="border border-gray-100 rounded-2xl shadow-sm bg-white p-6">
                         <form onSubmit={handleSubmit}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div><TextField required id="firstName" name="firstName" label="First Name" fullWidth autoComplete="given-name" /></div>

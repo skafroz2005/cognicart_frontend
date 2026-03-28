@@ -98,11 +98,13 @@ const handleSubmit = (e) => {
 
 
   return (
-    <div className="p-10">
-      <Typography variant="h3" sx={{ textAlign: "center", mb: 5 }}>
-        Add New Product
-      </Typography>
-      <form onSubmit={handleSubmit} className="min-h-screen">
+    <div className="p-6 lg:p-8 bg-[#f8fafc] min-h-screen">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Add New Product</h1>
+        <p className="text-sm text-gray-500 mt-1">Fill in the details below to create a new product</p>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
+      <form onSubmit={handleSubmit}>
         <div className="mui-grid-container-div mui-spacing-3">
           <div className="mui-grid-item-div mui-col-xs-12">
             <TextField
@@ -299,7 +301,15 @@ const handleSubmit = (e) => {
           <div className="mui-grid-item-div mui-col-xs-12">
             <Button
               variant="contained"
-              sx={{ p: 1.8, bgcolor: "#9155fd" }}
+              sx={{ 
+                p: 1.8, 
+                bgcolor: "#4f46e5",
+                borderRadius: '12px',
+                textTransform: 'none',
+                fontWeight: 600,
+                fontSize: '0.95rem',
+                '&:hover': { bgcolor: '#4338ca' },
+              }}
               size="large"
               type="submit"
               fullWidth
@@ -309,6 +319,7 @@ const handleSubmit = (e) => {
           </div>
         </div>
       </form>
+      </div>
     </div>
   );
 };

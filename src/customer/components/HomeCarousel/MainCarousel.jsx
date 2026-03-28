@@ -7,7 +7,8 @@ const MainCarousel = () => {
     // Transform the data into image elements
         const items = mainCarouselData.map((item) => 
             <img 
-                className='mx-auto cursor-pointer -z-10 flex justify-center items-center'
+                className='mx-auto cursor-pointer -z-10 flex justify-center items-center w-full object-cover'
+                style={{ maxHeight: '500px' }}
                 role='presentation' 
                 src={item.image} 
                 alt="" 
@@ -15,13 +16,16 @@ const MainCarousel = () => {
         );
 
     return (
-        <AliceCarousel
-            items={items}
-            disableButtonsControls
-            autoPlay
-            autoPlayInterval={1000}
-            infinite
-        />
+        <div className="rounded-2xl overflow-hidden mx-4 lg:mx-8 mt-4 shadow-md">
+            <AliceCarousel
+                items={items}
+                disableButtonsControls
+                disableDotsControls
+                autoPlay
+                autoPlayInterval={1000}
+                infinite
+            />
+        </div>
     );
 };
 

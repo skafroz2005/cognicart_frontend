@@ -108,7 +108,7 @@ export default function Product() {
   }, [param.levelOne, param.levelThree, colorValue, sizeValue, priceValue, discount, sortValue, pageNumber, stock, dispatch]);
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#f8fafc] min-h-screen">
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -160,7 +160,7 @@ export default function Product() {
 
         <main className="mx-auto px-4 sm:px-6 lg:px-20">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
 
             <div className="flex items-center">
               <Menu as="div" className="relative inline-block text-left">
@@ -321,7 +321,7 @@ export default function Product() {
 
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
-                <div className='flex flex-wrap justify-center bg-white py-5'>
+                <div className='flex flex-wrap justify-center bg-transparent py-5'>
                     {/* The crucial mapping update: fetching real data instead of dummy array */}
                     {products.products && products.products?.content?.map((item) => (
                         <ProductCard key={item.id} product={item} />

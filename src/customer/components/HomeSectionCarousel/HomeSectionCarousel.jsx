@@ -1,98 +1,9 @@
-// import React, { useState } from 'react';
-// import AliceCarousel from 'react-alice-carousel';
-// import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
-// import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-// import { Button } from '@mui/material';
-
-// const HomeSectionCarousel = ({ data, sectionName }) => {
-//     // const HomeSectionCarousel = () => {
-//     const [activeIndex, setActiveIndex] = useState(0);
-
-//     // Determines how many items show on different screen sizes
-//     const responsive = {
-//         0: { items: 1 },
-//         720: { items: 3 },
-//         1024: { items: 4 },// Adjust this based on how many items you want to show on larger screens
-//     };
-
-//     // const items = mens_kurta.slice(0, 10).map((item) => <HomeSectionCard product={item} />);
-
-//     const slidePrev = () => setActiveIndex(activeIndex - 1);
-//     const slideNext = () => setActiveIndex(activeIndex + 1);
-
-//     const syncActiveIndex = ({ item }) => setActiveIndex(item);
-
-//     // Map the incoming data array to the HomeSectionCard component
-//     const items = data.slice(0, 10).map((item, index) => (
-//         <HomeSectionCard key={index} product={item} />
-//     ));
-
-//     return (
-//         <div className="border">
-//             <h2 className="text-2xl font-extrabold text-gray-800 py-5">{sectionName}</h2>
-//             <div className="relative p-5">
-//                 <AliceCarousel
-//                     items={items}
-//                     disableButtonsControls
-//                     disableDotsControls
-//                     responsive={responsive}
-//                     onSlideChanged={syncActiveIndex}
-//                     activeIndex={activeIndex}
-//                 />
-
-//                 {/* Custom Next Button */}
-//                 {activeIndex !== items.length - 5 && (
-//                     <Button
-//                         variant="contained"
-//                         className="z-50 bg-white"
-//                         onClick={slideNext}
-//                         sx={{
-//                             position: 'absolute',
-//                             top: '8rem',
-//                             right: '0rem',
-//                             transform: 'translateX(50%) rotate(90deg)',
-//                             bgcolor: 'white',
-//                         }}
-//                         aria-label="next"
-//                     >
-//                         <KeyboardArrowLeftIcon sx={{ transform: 'rotate(90deg)', color: 'black' }} />
-//                     </Button>
-//                 )}
-
-//                 {/* Custom Previous Button */}
-//                 {activeIndex !== 0 && (
-//                     <Button
-//                         variant="contained"
-//                         className="z-50 bg-white"
-//                         onClick={slidePrev}
-//                         sx={{
-//                             position: 'absolute',
-//                             top: '8rem',
-//                             left: '0rem',
-//                             transform: 'translateX(-50%) rotate(90deg)',
-//                             bgcolor: 'white',
-//                         }}
-//                         aria-label="previous"
-//                     >
-//                         <KeyboardArrowLeftIcon sx={{ transform: 'rotate(-90deg)', color: 'black' }} />
-//                     </Button>
-//                 )}
-//             </div>
-//         </div>
-//     );
-
-
-
-// };
-
-// export default HomeSectionCarousel;
-
-
 import React, { useState, useRef } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import { Button } from '@mui/material';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { IconButton } from '@mui/material';
 
 const HomeSectionCarousel = ({ data, sectionName }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -118,8 +29,10 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
     ));
 
     return (
-        <div className="border border-black">
-            <h2 className="text-2xl font-extrabold text-gray-800 py-5">{sectionName}</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 pt-6 pb-2">
+                <h2 className="text-xl font-bold text-gray-900 tracking-tight">{sectionName}</h2>
+            </div>
             <div className="relative p-5">
                 <AliceCarousel
                     ref={carouselRef} // Attach the ref here
@@ -132,39 +45,61 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
                 />
                 
                 {activeIndex !== items.length - 5 && (
-                    <Button
-                        variant="contained"
-                        className="z-50 bg-white"
+                    <IconButton
+                        className="z-50"
                         onClick={slideNext}
                         sx={{
                             position: 'absolute',
-                            top: '8rem',
-                            right: '0rem',
-                            transform: 'translateX(50%) rotate(90deg)',
-                            bgcolor: 'white',
+                            top: '50%',
+                            right: '12px',
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255,255,255,0.95)',
+                            border: '1px solid #e5e7eb',
+                            width: '44px',
+                            height: '44px',
+                            boxShadow: '0 8px 24px rgba(15,23,42,0.12)',
+                            color: '#1f2937',
+                            display: { xs: 'none', md: 'flex' },
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                bgcolor: '#ffffff',
+                                boxShadow: '0 12px 28px rgba(15,23,42,0.16)',
+                                transform: 'translateY(-50%) scale(1.05)',
+                            },
                         }}
                         aria-label="next"
                     >
-                        <KeyboardArrowLeftIcon sx={{ transform: 'rotate(90deg)', color: 'black' }} />
-                    </Button>
+                        <KeyboardArrowRightIcon />
+                    </IconButton>
                 )}
 
                 {activeIndex !== 0 && (
-                    <Button
-                        variant="contained"
-                        className="z-50 bg-white"
+                    <IconButton
+                        className="z-50"
                         onClick={slidePrev}
                         sx={{
                             position: 'absolute',
-                            top: '8rem',
-                            left: '0rem',
-                            transform: 'translateX(-50%) rotate(90deg)',
-                            bgcolor: 'white',
+                            top: '50%',
+                            left: '12px',
+                            transform: 'translateY(-50%)',
+                            bgcolor: 'rgba(255,255,255,0.95)',
+                            border: '1px solid #e5e7eb',
+                            width: '44px',
+                            height: '44px',
+                            boxShadow: '0 8px 24px rgba(15,23,42,0.12)',
+                            color: '#1f2937',
+                            display: { xs: 'none', md: 'flex' },
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                bgcolor: '#ffffff',
+                                boxShadow: '0 12px 28px rgba(15,23,42,0.16)',
+                                transform: 'translateY(-50%) scale(1.05)',
+                            },
                         }}
                         aria-label="previous"
                     >
-                        <KeyboardArrowLeftIcon sx={{ transform: 'rotate(-90deg)', color: 'black' }} />
-                    </Button>
+                        <KeyboardArrowLeftIcon />
+                    </IconButton>
                 )}
             </div>
         </div>

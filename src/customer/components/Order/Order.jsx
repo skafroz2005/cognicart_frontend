@@ -111,15 +111,15 @@ const Order = () => {
         });
 
     return (
-        <div className='px:5 lg:px-20'>
-            <div className='mui-grid-container-div' style={{ justifyContent: "space-between" }}>
+        <div className='px-4 lg:px-20 py-6'>
+            <div className='mui-grid-container-div gap-6' style={{ justifyContent: "space-between" }}>
                 
                 {/* Left Sidebar: Filters */}
-                <div className='mui-grid-item-div mui-col-xs-2-5'>
-                    <div className='h-auto shadow-lg bg-white p-5 sticky top-5'>
-                        <h1 className='font-bold text-lg'>Filter</h1>
+                <div className='mui-grid-item-div w-full lg:w-[20.833333%]'>
+                    <div className='h-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-sm lg:sticky lg:top-5'>
+                        <h1 className='font-bold text-lg text-gray-900'>Filters</h1>
                         <div className='space-y-4 mt-10'>
-                            <h1 className='font-semibold'>ORDER STATUS</h1>
+                            <h1 className='text-xs font-semibold uppercase tracking-wide text-gray-500'>Order Status</h1>
                             {orderStatus.map((option) => (
                                 <div key={option.value} className='flex items-center'>
                                     <input 
@@ -138,7 +138,7 @@ const Order = () => {
                 </div>
 
                 {/* Right Main Area: Dynamic Order Cards */}
-                <div className='mui-grid-item-div mui-col-xs-9'>
+                <div className='mui-grid-item-div w-full lg:w-[75%]'>
                     <div className='space-y-5'>
                         {/* CHANGE this to map over filteredAndSortedOrders */}
                         {filteredAndSortedOrders.map((orderItem) => (

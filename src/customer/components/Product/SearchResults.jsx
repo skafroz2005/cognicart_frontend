@@ -79,7 +79,7 @@ const SearchResults = () => {
     };
 
     return (
-        <div className="bg-white px-4 py-10 sm:px-6 lg:px-8">
+        <div className="bg-[#f8fafc] min-h-screen px-4 py-10 sm:px-6 lg:px-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
                 Search Results for "{keyword}"
             </h1>

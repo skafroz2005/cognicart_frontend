@@ -114,7 +114,7 @@ export default function ProductDetails() {
 
 
     return (
-        <div className="bg-white lg:px-20">
+        <div className="bg-[#f8fafc] lg:px-20 min-h-screen">
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -152,7 +152,7 @@ export default function ProductDetails() {
 
                     <div className="flex flex-col items-center">  {/* change by me */}
                         {/* Main Big Image */}
-                        <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
+                        <div className="overflow-hidden rounded-2xl max-w-[30rem] max-h-[35rem] shadow-sm border border-gray-100">
                             <img
                                 src={activeImage || products.product?.imageUrl} // Changes when a thumbnail is clicked
                                 alt={products.product?.title}
@@ -166,7 +166,7 @@ export default function ProductDetails() {
                             {/* 1. Render the primary imageUrl as the first thumbnail */}
                             <div
                                 onClick={() => setActiveImage(products.product?.imageUrl)}
-                                className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] cursor-pointer"
+                                className="overflow-hidden rounded-xl max-w-[5rem] max-h-[5rem] cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-all duration-200"
                             >
                                 <img
                                     src={products.product?.imageUrl}
@@ -180,7 +180,7 @@ export default function ProductDetails() {
                                 <div
                                     key={index}
                                     onClick={() => setActiveImage(item)}
-                                    className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] cursor-pointer"
+                                    className="overflow-hidden rounded-xl max-w-[5rem] max-h-[5rem] cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-all duration-200"
                                 >
                                     <img
                                         src={item}
@@ -371,7 +371,7 @@ export default function ProductDetails() {
                 {/* Rating and Reviews Section */}
                 <section className='px-4 lg:px-20'>
                     <h1 className='font-semibold text-lg pb-4'>Recent Review & Rating</h1>
-                    <div className='border p-5'>
+                    <div className='border border-gray-100 rounded-2xl p-6 bg-white shadow-sm'>
                         <div className='mui-grid-container-div mui-spacing-7'>
                             {/* Inside the Grid for Reviews & Ratings */}
                             <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-7'>
@@ -486,7 +486,7 @@ export default function ProductDetails() {
 
                 {/* Similar Products */}
                 <section className='pt-10'>
-                    <h1 className='py-5 text-xl font-bold'>Similar Products</h1>
+                    <h1 className='py-5 text-xl font-bold text-gray-900'>Similar Products</h1>
                     <div className='flex flex-wrap space-y-5 justify-center gap-4'>
                         
                         {/* 3. Filter out the currently viewed product, then map the rest! */}

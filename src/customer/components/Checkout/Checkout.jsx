@@ -26,7 +26,7 @@ export default function Checkout() {
     };
 
     return (
-        <div className='px-10 lg:px-20 pt-10'>
+        <div className='px-10 lg:px-20 pt-10 bg-[#f8fafc] min-h-screen'>
             <Box sx={{ width: '100%' }}>
                 <Stepper activeStep={step}>
                     {steps.map((label, index) => {

@@ -48,12 +48,12 @@ const RateProduct = () => {
     };
 
     return (
-        <div className='px-5 lg:px-20 py-10'>
+        <div className='px-5 lg:px-20 py-10 bg-[#f8fafc] min-h-screen'>
             <h1 className='text-xl font-bold pb-10'>Rate & Review Product</h1>
             <div className='mui-grid-container-div mui-spacing-5'>
                 {/* Left Side: Product Info */}
                 <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-4'>
-                    <div className='border rounded-md shadow-md p-5 flex flex-col items-center'>
+                    <div className='border border-gray-100 rounded-2xl shadow-sm bg-white p-6 flex flex-col items-center'>
                         <img 
                             className='w-[15rem] h-[15rem] object-cover object-top' 
                             
@@ -70,7 +70,7 @@ const RateProduct = () => {
 
                 {/* Right Side: The Form */}
                 <div className='mui-grid-item-div mui-col-xs-12 mui-col-lg-8'>
-                    <form onSubmit={handleSubmit} className='space-y-5 border rounded-md shadow-md p-5'>
+                    <form onSubmit={handleSubmit} className='space-y-5 border border-gray-100 rounded-2xl shadow-sm bg-white p-6'>
                         <div>
                             <Typography component="legend">Rate This Product</Typography>
                             <Rating

@@ -12,9 +12,9 @@ const style = {
     width: 500,
     bgcolor: 'background.paper',
     outline: 'none',
-    boxShadow: 24,
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
     p: 4,
-    borderRadius: 2
+    borderRadius: 3
 };
 
 const AuthModal = ({ handleClose, open }) => {

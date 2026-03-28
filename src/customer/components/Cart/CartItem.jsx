@@ -21,9 +21,9 @@ const CartItem = ({ item }) => {
     };
 
     return (
-        <div className='p-5 shadow-lg border rounded-md'>
+        <div className='p-5 shadow-sm border border-gray-100 rounded-2xl bg-white hover:shadow-md transition-shadow duration-200'>
             <div className='flex items-center'>
-                <div className='w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]'>
+                <div className='w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem] rounded-xl overflow-hidden'>
                     <img 
                         className='w-full h-full object-cover object-top' 
                         src={item.product.imageUrl} 
@@ -52,7 +52,7 @@ const CartItem = ({ item }) => {
                     >
                         <RemoveCircleOutlineIcon />
                     </IconButton>
-                    <span className='py-1 px-7 border rounded-sm'>{item.quantity}</span>
+                    <span className='py-1.5 px-7 border border-gray-200 rounded-lg text-sm font-medium'>{item.quantity}</span>
                     <IconButton 
                         onClick={() => handleUpdateCartItem(1)} 
                         sx={{ color: "RGB(145 85 253)" }}

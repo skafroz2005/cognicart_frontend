@@ -7,7 +7,7 @@ const HomePage = () => {
     // 1. Create state variables to hold the dynamic data for each section
     const [mensKurta, setMensKurta] = useState([]);
     const [mensShoes, setMensShoes] = useState([]);
-    const [kidsKurta, setKidsKurta] = useState([]); // Or whatever your 3rd category is
+    const [mensShirts, setMensShirts] = useState([]);
 
     // 2. Fetch the data when the homepage loads
     useEffect(() => {
@@ -30,25 +30,29 @@ const HomePage = () => {
             })
             .catch((err) => console.error("Failed to fetch Mens Shoes", err));
 
-        // Fetch Kids Kurta (Make sure the category name matches your database exactly!)
-        api.get('/api/products?category=kids_kurta&pageSize=10')
+        // Fetch Men's Shirts
+        api.get('/api/products?category=shirt&topLevelCategory=men&pageSize=10')
             .then((res) => {
                 // Check if it's paginated (.content) or a raw list (res.data)
                 const dataArray = res.data.content || res.data; 
-                console.log("Kids Kurta Data:", dataArray); // Let's print it to check!
-                setKidsKurta(dataArray);
+                console.log("Mens Shirts Data:", dataArray);
+                setMensShirts(dataArray);
             })
             .catch((err) => console.error("Failed", err));
     }, []);
 
     return (
-        <div>
+        <div className="bg-[#f8fafc] min-h-screen">
             <MainCarousel />
             
             <div className='space-y-10 py-20 flex flex-col justify-center px-5 lg:px-10'>
                 {/* 3. Pass the dynamic state into your carousels! */}
                 {/* We use ?.length > 0 to ensure the carousel only draws if there are actually products in that category */}
                 
+                {mensShirts?.length > 0 && (
+                    <HomeSectionCarousel data={mensShirts} sectionName={"Men's Shirts"} />
+                )}
+
                 {mensKurta?.length > 0 && (
                     <HomeSectionCarousel data={mensKurta} sectionName={"Men's Kurta"} />
                 )}
@@ -57,9 +61,7 @@ const HomePage = () => {
                     <HomeSectionCarousel data={mensShoes} sectionName={"Men's Shoes"} />
                 )}
                 
-                {kidsKurta?.length > 0 && (
-                    <HomeSectionCarousel data={kidsKurta} sectionName={"Kids' Kurta"} />
-                )}
+                
             </div>
         </div>
     );

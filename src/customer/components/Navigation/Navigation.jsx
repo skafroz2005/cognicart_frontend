@@ -100,7 +100,7 @@ export default function Navigation() {
 
 
   return (
-    <div className="bg-white pb-10">
+    <div className="bg-white pb-10 font-['Inter',sans-serif]">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -215,12 +215,12 @@ export default function Navigation() {
 
       {/* Desktop menu */}
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+        <p className="flex h-10 items-center justify-center bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8 tracking-wide">
           Get free delivery on orders over $100
         </p>
 
         <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-gray-100">
             <div className="flex h-16 items-center">
 
               {/* Mobile menu button */}
@@ -411,11 +411,12 @@ export default function Navigation() {
                 </div>
 
                 {/* Search */}
-                <div className="flex lg:ml-6 items-center border rounded-md px-2">
+                <div className="flex lg:ml-6 items-center bg-gray-50 rounded-full px-4 py-1.5 border border-gray-200 hover:border-indigo-300 hover:bg-gray-100 transition-all duration-200">
+                  <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 mr-2" aria-hidden="true" />
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="outline-none border-none focus:ring-0 text-sm"
+                    className="outline-none border-none focus:ring-0 text-sm bg-transparent w-40 lg:w-48"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         // When the user hits Enter, navigate to a new search page
@@ -423,17 +424,16 @@ export default function Navigation() {
                       }
                     }}
                   />
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <Button
                     onClick={() => navigate('/cart')}
-                    className="group -m-2 flex items-center p-2"
+                    className="group -m-2 flex items-center p-2 hover:bg-gray-50 rounded-full transition-colors duration-200"
                   >
                     <ShoppingBagIcon
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-indigo-500 transition-colors duration-200"
                       aria-hidden="true"
                     />
                     {/* <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span> */}

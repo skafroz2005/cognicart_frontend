@@ -14,14 +14,14 @@ const ProductReviewCard = ({ item, ratings }) => {
     const initial = userName.charAt(0).toUpperCase();
 
     return (
-        <div>
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
             <div className='mui-grid-container-div mui-spacing-2' style={{ gap: '24px' }}>
                 
                 <div className='mui-grid-item-div mui-col-xs-1'>
                     <Box>
                         <Avatar 
                             className='text-white' 
-                            sx={{ width: 56, height: 56, bgcolor: "#9155fd" }}
+                            sx={{ width: 48, height: 48, bgcolor: "#9155fd", fontSize: '1rem', fontWeight: 600 }}
                         >
                             {/* Insert the safe initial! */}
                             {initial}
@@ -30,19 +30,19 @@ const ProductReviewCard = ({ item, ratings }) => {
                 </div>
 
                 <div className='mui-grid-item-div mui-col-xs-9'>
-                    <div className='space-y-2'>
+                    <div className='space-y-1'>
                         <div>
                             {/* Insert the safe username! */}
-                            <p className='font-semibold text-lg'>{userName}</p>
-                            <p className='opacity-70'>
+                            <p className='font-semibold text-base text-gray-900'>{userName}</p>
+                            <p className='text-xs text-gray-500'>
                                 {new Date(item?.createdAt).toLocaleDateString()}
                             </p>
                         </div>
                     </div>
                     
-                    <Rating value={actualStars} name='half-rating' readOnly precision={0.5} /> 
+                    <Rating value={actualStars} name='half-rating' readOnly precision={0.5} size="small" sx={{ mt: 1 }} /> 
                     
-                    <p className='mt-2'>
+                    <p className='mt-2 text-sm text-gray-700 leading-relaxed'>
                         {item?.review}
                     </p>
                 </div>
