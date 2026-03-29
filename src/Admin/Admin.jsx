@@ -6,12 +6,14 @@ import Inventory2Icon from '@mui/icons-material/Inventory2';
 import PeopleIcon from '@mui/icons-material/People';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import LogoutIcon from '@mui/icons-material/Logout';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 
 // We will build these components next!
 import AdminDashboard from './components/AdminDashboard';
 import CreateProductForm from './components/CreateProductForm';
+import AIAttributeExtraction from './components/AIAttributeExtraction';
 import ProductsTable from './components/ProductsTable';
 import OrdersTable from './components/OrdersTable';
 import CustomersTable from './components/CustomersTable';
@@ -21,6 +23,7 @@ const menu = [
     {name: "Products", path: "/admin/products", icon: <Inventory2Icon/>},
     {name: "Customers", path: "/admin/customers", icon: <PeopleIcon/>},
     {name: "Orders", path: "/admin/orders", icon: <ReceiptLongIcon/>},
+    {name: "AI Extract", path: "/admin/product/ai-extract", icon: <AutoFixHighIcon/>},
     {name: "Add Product", path: "/admin/product/create", icon: <AddBoxIcon/>},
 ];
 
@@ -165,6 +168,7 @@ const Admin = () => {
                 <Routes>
                     <Route path="/" element={<AdminDashboard />} />
                     <Route path="/product/create" element={<CreateProductForm />} />
+                    <Route path="/product/ai-extract" element={<AIAttributeExtraction />} />
                     <Route path="/products" element={<ProductsTable />} />
                     <Route path="/orders" element={<OrdersTable />} />
                     <Route path="/customers" element={<CustomersTable />} />

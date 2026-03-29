@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import HomePage from '../customer/pages/HomePage/HomePage';
 import Cart from '../customer/components/Cart/Cart';
 import Navigation from '../customer/components/Navigation/Navigation';
@@ -12,9 +13,15 @@ import OrderDetails from '../customer/components/Order/OrderDetails';
 import PaymentSuccess from '../customer/components/Payment/PaymentSuccess';
 import SearchResults from '../customer/components/Product/SearchResults';
 import RateProduct from '../customer/components/ReviewProduct/RateProduct';
+import AiModePage from '../customer/pages/AIMode/AiModePage';
 
 
 const CustomerRoutes = () => {
+    const authUser = useSelector((store) => store.auth?.user);
+    const jwt = localStorage.getItem('jwt');
+    const location = useLocation();
+    const isAiModeRoute = location.pathname === '/ai-mode';
+
     return (
         <div>
             {/* The Navigation bar will persist across all customer routes */}
@@ -37,12 +44,18 @@ const CustomerRoutes = () => {
                 <Route path="/account/rate/:productId" element={<RateProduct />} />
 
                 <Route path="/search" element={<SearchResults />} />
+                <Route
+                    path="/ai-mode"
+                    element={authUser || jwt ? <AiModePage /> : <Navigate to="/" replace />}
+                />
             </Routes>
 
             {/* The Footer will persist across all customer routes */}
-            <div>
-                <Footer />
-            </div>
+            {!isAiModeRoute && (
+                <div>
+                    <Footer />
+                </div>
+            )}
         </div>
     );
 };

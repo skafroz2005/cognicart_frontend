@@ -12,6 +12,11 @@ import {
     CREATE_PRODUCT_REQUEST,
     CREATE_PRODUCT_SUCCESS,
     CREATE_PRODUCT_FAILURE,
+    EXTRACT_ATTRIBUTES_REQUEST,
+    EXTRACT_ATTRIBUTES_SUCCESS,
+    EXTRACT_ATTRIBUTES_FAILURE,
+    CLEAR_EXTRACTION_RESULT,
+    CLEAR_PRODUCT_MESSAGES,
     DELETE_PRODUCT_REQUEST,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_FAILURE
@@ -71,10 +76,22 @@ export const createProduct = (product) => async (dispatch) => {
     dispatch({ type: CREATE_PRODUCT_REQUEST });
     try {
         const { data } = await api.post(`/api/admin/products/`, product);
-        console.log("Created product: ", data);
-        dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
+        const createdProduct = data?.product || data;
+        const successMessage = data?.message || "Product created successfully";
+
+        dispatch({
+            type: CREATE_PRODUCT_SUCCESS,
+            payload: {
+                product: createdProduct,
+                message: successMessage,
+            },
+        });
+
+        return { success: true, product: createdProduct, message: successMessage };
     } catch (error) {
-        dispatch({ type: CREATE_PRODUCT_FAILURE, payload: error.message });
+        const errorMessage = error?.response?.data?.message || error.message || "Failed to create product";
+        dispatch({ type: CREATE_PRODUCT_FAILURE, payload: errorMessage });
+        return { success: false, error: errorMessage };
     }
 };
 
@@ -100,3 +117,21 @@ export const searchProduct = (keyword) => async (dispatch) => {
         dispatch({ type: SEARCH_PRODUCT_FAILURE, payload: error.message });
     }
 };
+
+export const extractProductAttributes = (payload) => async (dispatch) => {
+    dispatch({ type: EXTRACT_ATTRIBUTES_REQUEST });
+    try {
+        const { data } = await api.post(`/api/admin/products/extract-attributes`, payload);
+        dispatch({ type: EXTRACT_ATTRIBUTES_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({ type: EXTRACT_ATTRIBUTES_FAILURE, payload: error.message });
+    }
+};
+
+export const clearExtractionResult = () => ({
+    type: CLEAR_EXTRACTION_RESULT,
+});
+
+export const clearProductMessages = () => ({
+    type: CLEAR_PRODUCT_MESSAGES,
+});

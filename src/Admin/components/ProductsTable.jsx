@@ -7,7 +7,7 @@ const ProductsTable = () => {
     const dispatch = useDispatch();
     const { products } = useSelector(store => store);
 
-    // Fetch products when the component mounts or when a product is deleted
+    // Fetch products when the component mounts, when a product is deleted, or when a new product is created
     useEffect(() => {
         const data = {
             category: "",
@@ -22,7 +22,7 @@ const ProductsTable = () => {
             stock: ""
         };
         dispatch(findProducts(data));
-    }, [products.deletedProduct, dispatch]);
+    }, [products.deletedProduct, products.product, dispatch]);
 
     const handleProductDelete = (productId) => {
         dispatch(deleteProduct(productId));

@@ -1,13 +1,14 @@
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, SparklesIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Avatar, Button, Menu, MenuItem } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AuthModal from '../../Auth/AuthModal';
 import { useDispatch, useSelector } from 'react-redux'
 import { getUser, logout } from '../../../State/Auth/Action'
 import { navigation } from './navigationData';
+import { api } from '../../../config/apiConfig';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -16,6 +17,7 @@ function classNames(...classes) {
 export default function Navigation() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate();
+  const aiModeTimerRef = useRef(null);
 
   // Auth state and dispatch
   const [openAuthModal, setOpenAuthModal] = useState(false);
@@ -27,6 +29,10 @@ export default function Navigation() {
   const { auth } = useSelector(store => store);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [isEnteringAiMode, setIsEnteringAiMode] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // const openAuthModal = location.pathname === "/login" || location.pathname === "/register";
 
@@ -69,6 +75,28 @@ export default function Navigation() {
     handleCloseUserMenu();
   }
 
+  const handleAiModeClick = () => {
+    if (!auth.user && !jwt) {
+      handleOpen();
+      return;
+    }
+
+    setIsEnteringAiMode(true);
+    aiModeTimerRef.current = setTimeout(() => {
+      navigate('/ai-mode');
+      setIsEnteringAiMode(false);
+    }, 900);
+  };
+
+  const handleSearchSubmit = () => {
+    const trimmed = searchTerm.trim();
+    if (!trimmed) {
+      return;
+    }
+    setShowSuggestions(false);
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+  };
+
   // Fetch user details if JWT exists
   useEffect(() => {
     if (jwt) {
@@ -91,11 +119,37 @@ export default function Navigation() {
   useEffect(() => {
     if (auth.user) {
       handleClose();
+      if (location.pathname === "/login" || location.pathname === "/register") {
+        navigate(-1);
+      }
     }
-    if (location.pathname === "/login" || location.pathname === "/register") {
-      navigate(-1);
+  }, [auth.user, location.pathname, navigate]);
+
+  useEffect(() => {
+    const query = searchTerm.trim();
+    if (query.length < 2) {
+      setSearchSuggestions([]);
+      return;
     }
-  }, [auth.user]); // <--- ONLY auth.user goes here!
+
+    const debounceTimer = setTimeout(async () => {
+      try {
+        const { data } = await api.get(`/api/products/search?q=${encodeURIComponent(query)}`);
+        const list = Array.isArray(data) ? data.slice(0, 6) : [];
+        setSearchSuggestions(list);
+      } catch (error) {
+        setSearchSuggestions([]);
+      }
+    }, 250);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
+
+  useEffect(() => () => {
+    if (aiModeTimerRef.current) {
+      clearTimeout(aiModeTimerRef.current);
+    }
+  }, []);
 
 
 
@@ -411,19 +465,55 @@ export default function Navigation() {
                 </div>
 
                 {/* Search */}
-                <div className="flex lg:ml-6 items-center bg-gray-50 rounded-full px-4 py-1.5 border border-gray-200 hover:border-indigo-300 hover:bg-gray-100 transition-all duration-200">
+                <div className="ml-4 lg:ml-6 hidden md:flex">
+                  <button
+                    type="button"
+                    onClick={handleAiModeClick}
+                    className="group inline-flex items-center gap-2 rounded-full border border-[#c2d3ff] bg-[#edf3ff] px-4 py-2 text-sm font-semibold text-[#13294f] hover:bg-[#dae7ff] transition-all duration-200"
+                  >
+                    <SparklesIcon className="h-4 w-4 text-[#1d3f82] group-hover:rotate-12 transition-transform duration-200" />
+                    AI Mode
+                  </button>
+                </div>
+
+                <div className="relative flex lg:ml-4 items-center bg-gray-50 rounded-full px-4 py-1.5 border border-gray-200 hover:border-indigo-300 hover:bg-gray-100 transition-all duration-200">
                   <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 mr-2" aria-hidden="true" />
                   <input
                     type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
                     placeholder="Search products..."
-                    className="outline-none border-none focus:ring-0 text-sm bg-transparent w-40 lg:w-48"
+                    className="outline-none border-none focus:ring-0 text-sm bg-transparent w-40 lg:w-52"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
-                        // When the user hits Enter, navigate to a new search page
-                        navigate(`/search?q=${e.target.value}`);
+                        handleSearchSubmit();
                       }
                     }}
                   />
+
+                  {showSuggestions && searchSuggestions.length > 0 && (
+                    <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-30 rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden">
+                      {searchSuggestions.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onMouseDown={() => {
+                            setShowSuggestions(false);
+                            navigate(`/product/${item.id}`);
+                          }}
+                          className="w-full text-left px-4 py-3 hover:bg-[#f3f7ff] border-b border-gray-100 last:border-b-0"
+                        >
+                          <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">Rs. {item.discountedPrice || item.price || 0}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Cart */}
@@ -448,6 +538,16 @@ export default function Navigation() {
 
       {/* Mount the AuthModal component */}
       <AuthModal handleClose={handleClose} open={openAuthModal} />
+
+      {isEnteringAiMode && (
+        <div className="fixed inset-0 z-[9999] bg-[radial-gradient(circle_at_15%_20%,rgba(82,128,255,0.5),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(63,206,255,0.4),transparent_35%),linear-gradient(140deg,#071223,#10294a_45%,#0d1f3a)] backdrop-blur-sm flex items-center justify-center">
+          <div className="text-center px-6">
+            <div className="mx-auto mb-6 h-16 w-16 rounded-full border-4 border-[#7ca4ff] border-t-transparent animate-spin" />
+            <p className="text-white text-2xl font-semibold tracking-wide">Switching to AI Mode</p>
+            <p className="text-[#c9dbff] text-sm mt-2">Launching premium stylist assistant...</p>
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -9,13 +9,22 @@ const HomePage = () => {
     const [mensShoes, setMensShoes] = useState([]);
     const [mensShirts, setMensShirts] = useState([]);
 
+    const normalizeProductArray = (payload) => {
+        if (Array.isArray(payload)) {
+            return payload;
+        }
+        if (Array.isArray(payload?.content)) {
+            return payload.content;
+        }
+        return [];
+    };
+
     // 2. Fetch the data when the homepage loads
     useEffect(() => {
         // Fetch Men's Kurta (Grabbing the first 10 items)'mens_kurtas'
         api.get('/api/products?category=mens_kurtas&pageSize=10')
             .then((res) => {
-                // Check if it's paginated (.content) or a raw list (res.data)
-                const dataArray = res.data.content || res.data; 
+                const dataArray = normalizeProductArray(res.data);
                 console.log("Mens Kurta Data:", dataArray); // Let's print it to check!
                 setMensKurta(dataArray);
             })
@@ -24,7 +33,7 @@ const HomePage = () => {
         // Fetch Men's Shoes
         api.get('/api/products?category=mens_shoes&pageSize=10')
             .then((res) => {
-                const dataArray = res.data.content || res.data;
+                const dataArray = normalizeProductArray(res.data);
                 console.log("Mens Shoes Data:", dataArray);
                 setMensShoes(dataArray);
             })
@@ -33,8 +42,7 @@ const HomePage = () => {
         // Fetch Men's Shirts
         api.get('/api/products?category=shirt&topLevelCategory=men&pageSize=10')
             .then((res) => {
-                // Check if it's paginated (.content) or a raw list (res.data)
-                const dataArray = res.data.content || res.data; 
+                const dataArray = normalizeProductArray(res.data);
                 console.log("Mens Shirts Data:", dataArray);
                 setMensShirts(dataArray);
             })

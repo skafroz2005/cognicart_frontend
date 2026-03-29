@@ -7,6 +7,7 @@ import { IconButton } from '@mui/material';
 
 const HomeSectionCarousel = ({ data, sectionName }) => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const safeData = Array.isArray(data) ? data : [];
     
     // 1. Create a reference to attach to the carousel
     const carouselRef = useRef(null);
@@ -24,7 +25,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
     // 3. Only use state to hide/show the buttons, not to force the slide
     const syncActiveIndex = ({ item }) => setActiveIndex(item);
 
-    const items = data.slice(0, 10).map((item, index) => (
+    const items = safeData.slice(0, 10).map((item, index) => (
         <HomeSectionCard key={index} product={item} />
     ));
 
